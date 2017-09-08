@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset=utf-8 />
-    <title>  Jekyll Portfolio Tutorial |  David Leonard</title>
+    <title>  Kohl Kinning </title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/pygment_trac.css">
     <link rel="stylesheet" href="/css/jquery.bxslider.css" />
@@ -10,22 +10,35 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
     <script src="/js/jquery.bxslider.min.js"></script>
 
+    <script src="https://use.typekit.net/nrf6yfy.js"></script>
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
+    <script src="/js/libs/three.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.2/p5.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.2/addons/p5.dom.js" type="text/javascript"></script>
+    <script src="/js/libs/quicksettings.min.js"></script>
 </head>
 
 <body>
-    <div class="wrapper">
-        <header>
-        <nav role="navigation">
-            <ul>
-                <li><a href="/about/"> About </a></li>
-                <li><a href="/portfolio/"> Projects </a></li>
-                <li><a href="/blog/"> Blog </a></li>
-                <li><a href="/contact/"> Contact </a></li>
-            </ul>
-        </nav>
-        </header>
+	<div class="wrapper">
+		<header>
+		<nav role="navigation">
+			<ul>
+				<li><a href="/about/"> About </a></li>
+				<li><a href="/portfolio/"> Projects </a></li>
+				<li><a href="/blog/"> Blog </a></li>
+				<li><a href="/contact/"> Contact </a></li>
+			</ul>
+		</nav>
+		</header>
+		
+		<!-- Animation Canvas -->
+		<div id="backgroundCanvas">
+			<!-- Wrapper -->
+			<div id="wrapper">
+			
 
-         <head>
+	
+		 	<head>
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -53,6 +66,64 @@
 
             <p> 
 
+<script> size(600, 400);
+    background(255);
+    colorMode(HSB);
+
+    var a = 0.99;
+
+    //draw mountains
+    var xoff = 1;
+
+    var drawMountain = function(offset, increase, clr) {
+        stroke(140, 100, clr);
+        var offset = offset;
+        var yoff = 0;
+        for(var i = 0; i < width; i++) {
+            var y = noise(yoff, xoff)*100;
+            line(i, offset+y, i, height);
+            yoff += increase;
+        }
+    };
+
+    //draw sun
+
+    var x = 0;
+    var y = 40;
+
+    var drawSun = function() {
+        noStroke();
+        fill(10, 225, 225);
+        ellipse(x, y, 40, 40);
+    };
+
+    draw = function() {
+        var bgChange = sin(a)*20;
+        var bg = map(bgChange, -20, 20, 40, 255);
+        fill(140, 60, bg);
+        noStroke();
+        rect(0, 0, width, height);
+        //background(225);
+
+        drawSun();
+        x += 1.2;
+        y += 0.4;
+
+         if (x > width+300) {
+            x = -40;
+            y = 40;
+        }
+        xoff += 0.01;
+
+        drawMountain(190, 0.003, 160);
+        drawMountain(200, 0.01, 100);
+        drawMountain(210, 0.006, 60);
+        drawMountain(220, 0.02, 30);
+
+        a += 0.007;
+};
+</script>
+
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut turpis id dui suscipit placerat. Duis efficitur lorem quis urna luctus ultrices. Curabitur et augue rhoncus, maximus arcu at, sodales erat. Aenean at ex nisi. Vivamus odio neque, dignissim in pellentesque sit amet, bibendum id ante. Quisque in tellus eget odio imperdiet tempor ornare in erat. Proin lacinia, ante facilisis mollis suscipit, nisi metus vulputate ligula, sed venenatis neque felis at elit. Ut egestas odio a tortor lobortis, id auctor magna pulvinar. Suspendisse potenti. Vestibulum consectetur, ipsum sed sagittis semper, tortor ligula finibus nibh, ut finibus augue tortor vitae augue. Cras malesuada nec elit vel tincidunt. </p>
 
 <p> Pellentesque id sem vel ex pulvinar vestibulum. Integer vitae sem blandit, feugiat mi et, gravida quam. Aliquam erat volutpat. Duis rhoncus sapien nunc, blandit elementum augue laoreet porta. Aenean porttitor odio eget sapien viverra, quis tincidunt est convallis. Duis accumsan, enim ut consectetur efficitur, mauris tellus venenatis augue, sit amet volutpat eros turpis sed odio. Ut massa libero, rhoncus sit amet nisl eu, tempor scelerisque ante. Vivamus nec viverra odio. Nulla finibus eget dolor id dictum. </p>
@@ -61,20 +132,28 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut turpis id d
 
         </section>
     </div>
-</body> 
+</body>
+ 
+		 	
+		 	
+		 
+			<!-- Wrapper -->
+ 			</div>
+		<!-- Animation Canvas -->
+		</div>
 
-        <footer>
-                <p>
-                    <small>©2014 Name Here </small><br />
-                    <small>Made with <a href="http://jekyllrb.com/">Jekyll</a> &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small>
-                </p>
-        </footer>
-    </div>
-
-    <body>
-    
-    <script src="/js/scale.fix.js"></script>
-  </body>
+	
+		<footer>
+				<p>
+					<small>©2017 Kohl Kinning</small><br />
+					<small>Made with <a href="http://jekyllrb.com/">Jekyll</a> &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small>
+				</p>
+		</footer>
+	</div>
+		
+	<body>    
+    	<script src="/js/scale.fix.js"></script>
+  	</body>
 
 </body>
 </html>
