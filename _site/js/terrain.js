@@ -4,8 +4,8 @@
 
 var cols, rows;
 var scl = 20;
-var w = 500;
-var h = 150;
+var w = 5000;
+var h = 1500;
 
 var flying = 0;
 
@@ -22,11 +22,11 @@ var panel = QuickSettings.create(600, 100, 'Terrain Controls')
 
 
 function setup() {
-    var canvasDiv = document.getElementById('myCanvas');
+    var canvasDiv = document.getElementById('backgroundCanvas');
     var width = canvasDiv.offsetWidth;
     var height = canvasDiv.offsetHeight;
     var sketchCanvas = createCanvas(width, height, "webgl");
-    sketchCanvas.parent('myCanvas');
+    sketchCanvas.parent('backgroundCanvas');
 
     cols = w / scl;
     rows = h / scl;
