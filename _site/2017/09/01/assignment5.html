@@ -23,10 +23,24 @@
 		<header>
 		<nav role="navigation">
 			<ul>
-				<li><a href="/about/"> About </a></li>
+				<li><a href="/"> About </a></li>
 				<li><a href="/portfolio/"> Projects </a></li>
 				<li><a href="/blog/"> Blog </a></li>
 				<li><a href="/contact/"> Contact </a></li>
+
+				
+
+<ul>
+  <li><a href="#content">2 class=&#8221;content&#8221;&gt;Assignment 5</a>
+    <ul>
+      <li><a href="#block-1-cleaning-filtering-and-digital-normalization-of-the-data">Block 1: Cleaning, Filtering, and Digital Normalization of the Data</a></li>
+      <li><a href="#block-3-evaluation-of-trinity-assemblies">Block 3: Evaluation of Trinity Assemblies</a></li>
+    </ul>
+  </li>
+</ul>
+
+
+
 			</ul>
 		</nav>
 		</header>
@@ -53,67 +67,74 @@ The objective of this assignment is to complete the tasks necessary for assembli
 
 <h4 id="1-use-the-process_shortreads-program-which-is-part-of-the-stacks-package-to-clean-the-set-of-paired-end-reads">1| Use the process_shortreads program, which is part of the Stacks package, to clean the set of paired-end reads</h4>
 
-<pre><code class="language-bash">$ process_shortreads -1 SscoPE_R1.fastq -2 SscoPE_R2.fastq -i fastq -o Cleaned/ -c -q --adapter_mm 2 --adapter_1 AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC --adapter_2 AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>process_shortreads -1 SscoPE_R1.fastq -2 SscoPE_R2.fastq -i fastq -o Cleaned/ -c -q --adapter_mm 2 --adapter_1 AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC --adapter_2 AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
 </code></pre>
+</div>
 
 <h4 id="2-using-unix-commands-summarize-the-distributions-of-read-lengths-one-for-r1s-one-for-r2s-for-the-trimmed-data-plot-these-distributions-in-r">2| Using UNIX commands summarize the distributions of read lengths (one for R1s, one for R2s) for the trimmed data. Plot these distributions in R</h4>
 
-<pre><code class="language-bash">$ awk 'NR % 4 == 2' SscoPEclean_R1.fq | awk '{print length}' |sort | uniq -c &gt; R1_lengths.txt
-$ awk 'NR % 4 == 2' SscoPEclean_R2.fq | awk '{print length}' |sort | uniq -c &gt; R2_lengths.txt
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>awk <span class="s1">'NR % 4 == 2'</span> SscoPEclean_R1.fq | awk <span class="s1">'{print length}'</span> |sort | uniq -c &gt; R1_lengths.txt
+<span class="gp">$ </span>awk <span class="s1">'NR % 4 == 2'</span> SscoPEclean_R2.fq | awk <span class="s1">'{print length}'</span> |sort | uniq -c &gt; R2_lengths.txt
 </code></pre>
+</div>
 
-<pre><code class="language-r">r1 = read.table("/Users/kohl/Documents/GradSchool/semester1/TopicsInGenomicAnalysis/Assignments/TopicsInGenomicAnalysis/assignment5/R1_lengths.txt")
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">r</span><span class="m">1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read.table</span><span class="p">(</span><span class="s2">"/Users/kohl/Documents/GradSchool/semester1/TopicsInGenomicAnalysis/Assignments/TopicsInGenomicAnalysis/assignment5/R1_lengths.txt"</span><span class="p">)</span><span class="w">
 
-r2 = read.table("/Users/kohl/Documents/GradSchool/semester1/TopicsInGenomicAnalysis/Assignments/TopicsInGenomicAnalysis/assignment5/R2_lengths.txt")
+</span><span class="n">r</span><span class="m">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read.table</span><span class="p">(</span><span class="s2">"/Users/kohl/Documents/GradSchool/semester1/TopicsInGenomicAnalysis/Assignments/TopicsInGenomicAnalysis/assignment5/R2_lengths.txt"</span><span class="p">)</span><span class="w">
 
-colnames(r1)[1:2] = c("counts", "lengths")
-colnames(r2)[1:2] = c("counts", "lengths")
-</code></pre>
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">r</span><span class="m">1</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"counts"</span><span class="p">,</span><span class="w"> </span><span class="s2">"lengths"</span><span class="p">)</span><span class="w">
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">r</span><span class="m">2</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"counts"</span><span class="p">,</span><span class="w"> </span><span class="s2">"lengths"</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
 
-<pre><code class="language-r">plot(r1$counts~r1$lengths, log = "y", col = "magenta4", pch = 3, xlab = "read lengths", ylab = "counts", main = "Trimmed Data Distributions")
-points(r2$counts~r2$lengths, col = "green4", pch = 5)
-</code></pre>
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="m">1</span><span class="o">$</span><span class="n">counts</span><span class="o">~</span><span class="n">r</span><span class="m">1</span><span class="o">$</span><span class="n">lengths</span><span class="p">,</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"y"</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"magenta4"</span><span class="p">,</span><span class="w"> </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="n">xlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"read lengths"</span><span class="p">,</span><span class="w"> </span><span class="n">ylab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"counts"</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Trimmed Data Distributions"</span><span class="p">)</span><span class="w">
+</span><span class="n">points</span><span class="p">(</span><span class="n">r</span><span class="m">2</span><span class="o">$</span><span class="n">counts</span><span class="o">~</span><span class="n">r</span><span class="m">2</span><span class="o">$</span><span class="n">lengths</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"green4"</span><span class="p">,</span><span class="w"> </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
 
 <p><img src="assignment5_files/figure-markdown_github/unnamed-chunk-2-1.png" alt="" /></p>
 
-<h4 id="3-filter-the-cleaned-data-for-rare-k-mers-using-kmer_filter">3| Filter the cleaned data for rare k-mers using <code>kmer_filter</code></h4>
+<h4 id="3-filter-the-cleaned-data-for-rare-k-mers-using-kmer_filter">3| Filter the cleaned data for rare k-mers using <code class="highlighter-rouge">kmer_filter</code></h4>
 
-<pre><code class="language-bash">ml purge
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>ml purge
 ml slurm
 ml easybuild  icc/2017.1-GCC-6.3-2.27  impi/2017.1
 ml Stacks/1.46
 
 kmer_filter -1 ../SscoPEclean_R1.fq -2 ../SscoPEclean_R2.fq -i fastq -o Filtered/ --rare
 </code></pre>
+</div>
 
-<h4 id="4-run-kmer_filter-again-this-time-to-normalize-the-cleaned-filtered-data-to-2-different-coverages">4| Run <code>kmer_filter</code> again, this time to normalize the cleaned, filtered data to 2 different coverages</h4>
+<h4 id="4-run-kmer_filter-again-this-time-to-normalize-the-cleaned-filtered-data-to-2-different-coverages">4| Run <code class="highlighter-rouge">kmer_filter</code> again, this time to normalize the cleaned, filtered data to 2 different coverages</h4>
 
 <p><em>What’s happening to the data?</em>
 The cleaned and filtered data is being further culled. Only those reads with 40x coverage or 20x coverage are kept. The result is smaller files with less (higher quality) data.</p>
 
 <p>With 40x coverage.</p>
 
-<pre><code class="language-bash">ml purge
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>ml purge
 ml slurm
 ml easybuild  icc/2017.1.132-GCC-6.3.0-2.27  impi/2017.1.132
 ml Stacks/1.46
 
 kmer_filter -1 SscoPEcleanfil_R1.fq -2 SscoPEcleanfil_R2.fq -i fastq -o Normed/ --rare --normalize 40
 </code></pre>
+</div>
 
 <p>With 20x coverage.</p>
 
-<pre><code class="language-bash">ml purge
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>ml purge
 ml slurm
 ml easybuild  icc/2017.1.132-GCC-6.3.0-2.27  impi/2017.1.132
 ml Stacks/1.46
 
 kmer_filter -1 SscoPEcleanfil_R1.fq -2 SscoPEcleanfil_R2.fq -i fastq -o Normed/ --rare --normalize 20
 </code></pre>
+</div>
 
 <h4 id="6-now-run-kmer_filter-3-times---on-the-cleaned-set-the-cleanedfiltered-set-and-the-cleanedfiltered20x-normalized-set">6| Now run kmer_filter 3 times - on the cleaned set, the cleaned/filtered set, and the cleaned/filtered/20X normalized set</h4>
 
-<pre><code class="language-bash">ml purge
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>ml purge
 ml slurm
 ml easybuild  icc/2017.1.132-GCC-6.3.0-2.27  impi/2017.1.132
 ml Stacks/1.46
@@ -124,27 +145,29 @@ kmer_filter -1 Cleaned/Filtered/SscoPEcleanfil_R1.fq -2 Cleaned/Filtered/SscoPEc
 
 kmer_filter -1 Cleaned/Filtered/Normed/SscoPEcleanfil_R1.fil.norm.fq  -2 Cleaned/Filtered/Normed/SscoPEcleanfil_R2.fil.norm.fq -i fastq -o Dists/ --k_dist
 </code></pre>
+</div>
 
 <p>Plot the distributions.</p>
 
-<pre><code class="language-r">cleaned = read.table("/Users/kohl/Documents/GradSchool/semester1/TopicsInGenomicAnalysis/Assignments/TopicsInGenomicAnalysis/assignment5//Dists/dist_1.tsv", header = TRUE)
-filtered = read.table("/Users/kohl/Documents/GradSchool/semester1/TopicsInGenomicAnalysis/Assignments/TopicsInGenomicAnalysis/assignment5/Dists/dist_2.tsv", header = TRUE)
-normed = read.table("/Users/kohl/Documents/GradSchool/semester1/TopicsInGenomicAnalysis/Assignments/TopicsInGenomicAnalysis/assignment5/Dists/dist_3.tsv", header = TRUE)
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">cleaned</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read.table</span><span class="p">(</span><span class="s2">"/Users/kohl/Documents/GradSchool/semester1/TopicsInGenomicAnalysis/Assignments/TopicsInGenomicAnalysis/assignment5//Dists/dist_1.tsv"</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+</span><span class="n">filtered</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read.table</span><span class="p">(</span><span class="s2">"/Users/kohl/Documents/GradSchool/semester1/TopicsInGenomicAnalysis/Assignments/TopicsInGenomicAnalysis/assignment5/Dists/dist_2.tsv"</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+</span><span class="n">normed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read.table</span><span class="p">(</span><span class="s2">"/Users/kohl/Documents/GradSchool/semester1/TopicsInGenomicAnalysis/Assignments/TopicsInGenomicAnalysis/assignment5/Dists/dist_3.tsv"</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
 
 
-plot(log(cleaned$Count)~log(cleaned$KmerFrequency),
-      main="Cleaned, filtered, and normalized k-mer frequencies",
-     type="n",
-     xaxt="n",
-     yaxt="n",
-     xlab="k-mer frequency",
-     ylab="counts")
-points(log(cleaned$Count)~log(cleaned$KmerFrequency), pch = ".")
-points(log(filtered$Count)~log(filtered$KmerFrequency), col = "green4",pch = ".")
-points(log(normed$Count)~log(normed$KmerFrequency), col = "magenta4", pch = ".")
+</span><span class="n">plot</span><span class="p">(</span><span class="nf">log</span><span class="p">(</span><span class="n">cleaned</span><span class="o">$</span><span class="n">Count</span><span class="p">)</span><span class="o">~</span><span class="nf">log</span><span class="p">(</span><span class="n">cleaned</span><span class="o">$</span><span class="n">KmerFrequency</span><span class="p">),</span><span class="w">
+      </span><span class="n">main</span><span class="o">=</span><span class="s2">"Cleaned, filtered, and normalized k-mer frequencies"</span><span class="p">,</span><span class="w">
+     </span><span class="n">type</span><span class="o">=</span><span class="s2">"n"</span><span class="p">,</span><span class="w">
+     </span><span class="n">xaxt</span><span class="o">=</span><span class="s2">"n"</span><span class="p">,</span><span class="w">
+     </span><span class="n">yaxt</span><span class="o">=</span><span class="s2">"n"</span><span class="p">,</span><span class="w">
+     </span><span class="n">xlab</span><span class="o">=</span><span class="s2">"k-mer frequency"</span><span class="p">,</span><span class="w">
+     </span><span class="n">ylab</span><span class="o">=</span><span class="s2">"counts"</span><span class="p">)</span><span class="w">
+</span><span class="n">points</span><span class="p">(</span><span class="nf">log</span><span class="p">(</span><span class="n">cleaned</span><span class="o">$</span><span class="n">Count</span><span class="p">)</span><span class="o">~</span><span class="nf">log</span><span class="p">(</span><span class="n">cleaned</span><span class="o">$</span><span class="n">KmerFrequency</span><span class="p">),</span><span class="w"> </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"."</span><span class="p">)</span><span class="w">
+</span><span class="n">points</span><span class="p">(</span><span class="nf">log</span><span class="p">(</span><span class="n">filtered</span><span class="o">$</span><span class="n">Count</span><span class="p">)</span><span class="o">~</span><span class="nf">log</span><span class="p">(</span><span class="n">filtered</span><span class="o">$</span><span class="n">KmerFrequency</span><span class="p">),</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"green4"</span><span class="p">,</span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"."</span><span class="p">)</span><span class="w">
+</span><span class="n">points</span><span class="p">(</span><span class="nf">log</span><span class="p">(</span><span class="n">normed</span><span class="o">$</span><span class="n">Count</span><span class="p">)</span><span class="o">~</span><span class="nf">log</span><span class="p">(</span><span class="n">normed</span><span class="o">$</span><span class="n">KmerFrequency</span><span class="p">),</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"magenta4"</span><span class="p">,</span><span class="w"> </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"."</span><span class="p">)</span><span class="w">
 
-legend(9, 15, legend = c("cleaned", "filtered", "normalized"), col = c("green4", "black", "magenta4"), lty = 1)
-</code></pre>
+</span><span class="n">legend</span><span class="p">(</span><span class="m">9</span><span class="p">,</span><span class="w"> </span><span class="m">15</span><span class="p">,</span><span class="w"> </span><span class="n">legend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"cleaned"</span><span class="p">,</span><span class="w"> </span><span class="s2">"filtered"</span><span class="p">,</span><span class="w"> </span><span class="s2">"normalized"</span><span class="p">),</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"green4"</span><span class="p">,</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w"> </span><span class="s2">"magenta4"</span><span class="p">),</span><span class="w"> </span><span class="n">lty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
 
 <p><img src="assignment5_files/figure-markdown_github/unnamed-chunk-3-1.png" alt="" /> ### Block 2: Trinity Assembly</p>
 
@@ -152,18 +175,20 @@ legend(9, 15, legend = c("cleaned", "filtered", "normalized"), col = c("green4",
 
 <p>The files produced with “rare” in the name are from a Trinity assembly based on the “cleaned, rare-kmer-filtered only” Gulf pipefish reads from Block 1. The files with “40Xnorm” are output from a Trinity run based on the cleaned, rare-kmer-filtered, 40X-normalized reads.</p>
 
-<pre><code class="language-bash">$ Trinity.pl --seqType fq --JM 50G --left $work/SscoPEcleanfil_R1.fq \--right $work/SscoPEcleanfil_R2.fq --output $work/assembly --CPU 10 \--min_contig_length 300 --min_kmer_cov 3 --group_pairs_distance 800
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>Trinity.pl --seqType fq --JM 50G --left <span class="nv">$work</span>/SscoPEcleanfil_R1.fq <span class="se">\-</span>-right <span class="nv">$work</span>/SscoPEcleanfil_R2.fq --output <span class="nv">$work</span>/assembly --CPU 10 <span class="se">\-</span>-min_contig_length 300 --min_kmer_cov 3 --group_pairs_distance 800
 </code></pre>
+</div>
 
 <h3 id="block-3-evaluation-of-trinity-assemblies">Block 3: Evaluation of Trinity Assemblies</h3>
 
 <h4 id="1-retrieve-the-trinity-files">1| Retrieve the Trinity files</h4>
 
-<pre><code class="language-bash">/home/csmall/Bi623/trinity/tri_rare.fasta
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>/home/csmall/Bi623/trinity/tri_rare.fasta
 /home/csmall/Bi623/trinity/tri_rare.timing 
 /home/csmall/Bi623/trinity/tri_40Xnorm.fasta 
 /home/csmall/Bi623/trinity/tri_40Xnorm.timing
 </code></pre>
+</div>
 
 <h4 id="2-files-produced-by-trinity">2| Files produced by Trinity</h4>
 
@@ -177,22 +202,25 @@ legend(9, 15, legend = c("cleaned", "filtered", "normalized"), col = c("green4",
 
 <p>Using information in the two assembly files, calculate the number of transcripts, the maximum transcript length, the minimum transcript length, the mean transcript length, and the median transcript length. Plot the contig length distributions for each assembly.</p>
 
-<pre><code class="language-bash">$ sed -e 's/\(^&gt;.*$\)/#\1#/' tri_rare.fasta | tr -d "\r" | tr -d "\n" | sed -e 's/$/#/' | tr "#" "\n" | sed -e '/^$/d' | grep -Po [A-Z].+ | sed 's/[^"]//g' | awk '{ print length }' &gt; seq_tri_rare.fasta
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>sed -e <span class="s1">'s/\(^&gt;.*$\)/#\1#/'</span> tri_rare.fasta | tr -d <span class="s2">"</span><span class="se">\r</span><span class="s2">"</span> | tr -d <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> | sed -e <span class="s1">'s/$/#/'</span> | tr <span class="s2">"#"</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> | sed -e <span class="s1">'/^$/d'</span> | grep -Po <span class="o">[</span>A-Z].+ | sed <span class="s1">'s/[^"]//g'</span> | awk <span class="s1">'{ print length }'</span> &gt; seq_tri_rare.fasta
 
-$ sed -e 's/\(^&gt;.*$\)/#\1#/' tri_40Xnorm.fasta | tr -d "\r" | tr -d "\n" | sed -e 's/$/#/' | tr "#" "\n" | sed -e '/^$/d' | grep -Po [A-Z].+ | awk '{ print length }' &gt; seq_tri_40Xnorm.fasta
+<span class="gp">$ </span>sed -e <span class="s1">'s/\(^&gt;.*$\)/#\1#/'</span> tri_40Xnorm.fasta | tr -d <span class="s2">"</span><span class="se">\r</span><span class="s2">"</span> | tr -d <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> | sed -e <span class="s1">'s/$/#/'</span> | tr <span class="s2">"#"</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> | sed -e <span class="s1">'/^$/d'</span> | grep -Po <span class="o">[</span>A-Z].+ | awk <span class="s1">'{ print length }'</span> &gt; seq_tri_40Xnorm.fasta
 </code></pre>
+</div>
 
-<pre><code class="language-r">rare = read.table("/Users/kohl/Documents/GradSchool/semester1/TopicsInGenomicAnalysis/Assignments/TopicsInGenomicAnalysis/assignment5/seq_tri_rare.fasta")
-colnames(rare) = "length"
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">rare</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read.table</span><span class="p">(</span><span class="s2">"/Users/kohl/Documents/GradSchool/semester1/TopicsInGenomicAnalysis/Assignments/TopicsInGenomicAnalysis/assignment5/seq_tri_rare.fasta"</span><span class="p">)</span><span class="w">
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">rare</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"length"</span><span class="w">
 
-forty = read.table("/Users/kohl/Documents/GradSchool/semester1/TopicsInGenomicAnalysis/Assignments/TopicsInGenomicAnalysis/assignment5/seq_tri_40Xnorm.fasta")
-colnames(forty) = "length"
-</code></pre>
+</span><span class="n">forty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read.table</span><span class="p">(</span><span class="s2">"/Users/kohl/Documents/GradSchool/semester1/TopicsInGenomicAnalysis/Assignments/TopicsInGenomicAnalysis/assignment5/seq_tri_40Xnorm.fasta"</span><span class="p">)</span><span class="w">
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">forty</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"length"</span><span class="w">
+</span></code></pre>
+</div>
 
-<pre><code class="language-r">summary(rare)
-</code></pre>
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">summary</span><span class="p">(</span><span class="n">rare</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
 
-<pre><code>##      length     
+<div class="highlighter-rouge"><pre class="highlight"><code>##      length     
 ##  Min.   :  301  
 ##  1st Qu.:  856  
 ##  Median : 1960  
@@ -200,11 +228,13 @@ colnames(forty) = "length"
 ##  3rd Qu.: 3440  
 ##  Max.   :18857
 </code></pre>
+</div>
 
-<pre><code class="language-r">summary(forty)
-</code></pre>
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">summary</span><span class="p">(</span><span class="n">forty</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
 
-<pre><code>##      length     
+<div class="highlighter-rouge"><pre class="highlight"><code>##      length     
 ##  Min.   :  301  
 ##  1st Qu.: 1041  
 ##  Median : 2139  
@@ -212,15 +242,17 @@ colnames(forty) = "length"
 ##  3rd Qu.: 3546  
 ##  Max.   :22465
 </code></pre>
+</div>
 
-<pre><code class="language-r">par(mfrow=c(2,2))
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">par</span><span class="p">(</span><span class="n">mfrow</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">))</span><span class="w">
 
-hist(rare$length, ylim = c(0, 35000), xlim = c(0, 15000), xlab = "transcript length", main = "Rare kmer Lengths")
-hist(forty$length, ylim = c(0, 35000), xlim = c(0, 15000), xlab = "transcript length", main = "40X mer Coverage Lengths")
+</span><span class="n">hist</span><span class="p">(</span><span class="n">rare</span><span class="o">$</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">ylim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">35000</span><span class="p">),</span><span class="w"> </span><span class="n">xlim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">15000</span><span class="p">),</span><span class="w"> </span><span class="n">xlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"transcript length"</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Rare kmer Lengths"</span><span class="p">)</span><span class="w">
+</span><span class="n">hist</span><span class="p">(</span><span class="n">forty</span><span class="o">$</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">ylim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">35000</span><span class="p">),</span><span class="w"> </span><span class="n">xlim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">15000</span><span class="p">),</span><span class="w"> </span><span class="n">xlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"transcript length"</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"40X mer Coverage Lengths"</span><span class="p">)</span><span class="w">
 
-boxplot(rare$length, ylim = c(0, 25000))
-boxplot(forty$length, ylim = c(0, 25000))
-</code></pre>
+</span><span class="n">boxplot</span><span class="p">(</span><span class="n">rare</span><span class="o">$</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">ylim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">25000</span><span class="p">))</span><span class="w">
+</span><span class="n">boxplot</span><span class="p">(</span><span class="n">forty</span><span class="o">$</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">ylim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">25000</span><span class="p">))</span><span class="w">
+</span></code></pre>
+</div>
 
 <p><img src="assignment5_files/figure-markdown_github/unnamed-chunk-7-1.png" alt="" /></p>
 
@@ -240,18 +272,21 @@ boxplot(forty$length, ylim = c(0, 25000))
 
 <h4 id="6-build-a-stickleback-database-blast-pipefish-transcripts-against-stickleback-protein-sequences">6| Build a stickleback database, BLAST pipefish transcripts against stickleback protein sequences</h4>
 
-<pre><code class="language-bash">$ makeblastdb -in Gasterosteus_aculeatus.BROADS1.pep.all.fa -dbtype prot -out stickle 
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>makeblastdb -in Gasterosteus_aculeatus.BROADS1.pep.all.fa -dbtype prot -out stickle 
 </code></pre>
+</div>
 
-<pre><code class="language-bash">ml BLAST+/2.2.27
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>ml BLAST+/2.2.27
 
 blastx -db stickle -query ../tri_40Xnorm.fasta -evalue 1e-5 -max_target_seqs 1 -outfmt 6 -out 40Xnorm_stickle_blast
 </code></pre>
+</div>
 
-<pre><code class="language-bash">ml BLAST+/2.2.27
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>ml BLAST+/2.2.27
 
 blastx -db stickle -query ../tri_rare.fasta -evalue 1e-5 -max_target_seqs 1 -outfmt 6 -out rare_stickle_blast
 </code></pre>
+</div>
 
 <h4 id="8-blast-results">8| BLAST results</h4>
 
@@ -263,7 +298,7 @@ blastx -db stickle -query ../tri_rare.fasta -evalue 1e-5 -max_target_seqs 1 -out
 
 <h4 id="9-cegs">9| CEGs</h4>
 
-<p>Look at the file <code>/home/csmall/Bi623/trinity/rare_ceg.completeness_report</code>.</p>
+<p>Look at the file <code class="highlighter-rouge">/home/csmall/Bi623/trinity/rare_ceg.completeness_report</code>.</p>
 
 <p><em>What does this file tell you about transcriptome completeness for CEGs, and redundancy within our rare-kmer-filtered assembly?</em></p>
 
