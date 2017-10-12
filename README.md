@@ -7,3 +7,5 @@ Steps to get starter project up and running:
 5. `cd ACM-Portfolio-Presentation`
 6. `jekyll serve --watch`
 7. Navigate to `http://0.0.0.0:4000`
+
+Delete this readme
