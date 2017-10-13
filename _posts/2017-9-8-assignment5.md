@@ -2,6 +2,7 @@
 layout: post
 title: "Assignment 5"
 date: 2017-9-1
+author: "Kohl Kinning"
 
 ---
 
