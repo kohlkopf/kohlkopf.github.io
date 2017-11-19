@@ -398,6 +398,10 @@ footer {
   bottom:50px;
 }
 
+footer a {
+  padding:6px;
+}
+
 img.avatar {
   border-radius: 40px;
   -webkit-border-radius: 40px;
@@ -459,6 +463,7 @@ img.pull-left {
   
   header a small {
     display:inline;
+    padding:12px;
   }
   
   header ul {
@@ -471,6 +476,10 @@ img.pull-left {
     text-align: center;
     max-width: 400px;
     margin: 0 auto;
+  }
+  
+  footer a {
+    padding:12px;
   }
 }
 

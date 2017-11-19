@@ -3,11 +3,11 @@ var len = 60;
 
 function setup() {
 
-  var canvasDiv = document.getElementById('myCanvas');
+  var canvasDiv = document.getElementById('backgroundCanvas');
   var width = canvasDiv.clientWidth;
   var height = canvasDiv.clientHeight;
   
-  var sketchCanvas = createCanvas(width,475);
+  var sketchCanvas = createCanvas(width,height);
   sketchCanvas.parent('myCanvas');
 
   stroke(135, 146, 131);
