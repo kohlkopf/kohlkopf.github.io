@@ -2,7 +2,6 @@
 layout: post
 title: P5 demo, softbody 
 date: 2017-9-6
-
 ---
 <div id="myCanvas"></div>
 <script src="/js/softbody.js" type="text/javascript"></script>

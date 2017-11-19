@@ -1,0 +1,10 @@
+---
+layout: default
+---
+
+<section><body>
+
+<div id="myCanvas"></div>
+<script src="/js/tentacles.js" type="text/javascript"></script>
+
+</body></section>
