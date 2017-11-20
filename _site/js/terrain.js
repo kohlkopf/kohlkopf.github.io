@@ -1,32 +1,23 @@
-// Based on Daniel Shiffman's Coding challenges in Processing
+// Based on Daniel Shiffman's Coding challenges in Processing, adapted by Kohl Kinning
 // http://codingrainbow.com
 // http://patreon.com/codingrainbow
 
 var cols, rows;
-var scl = 20;
+var scl = 60;
 var w = 5000;
-var h = 1500;
+var h = 1000;
 
 var flying = 0;
 
 var terrain;
 
 
-var panelParent = document.getElementById('backgroundCanvas');
-
-var panel = QuickSettings.create(600, 100, 'Terrain Controls')
-    .addRange("flyingRate", 0.01, 0.5, 0.05, 0.01, draw)
-    .addRange("peak", 10, 250, 75, 1)
-    .addRange("valley", -250, -10, -75, -1);
-
-
-
 function setup() {
-    var canvasDiv = document.getElementById('backgroundCanvas');
+    var canvasDiv = document.getElementById('broad-canvas');
     var width = canvasDiv.offsetWidth;
     var height = canvasDiv.offsetHeight;
-    var sketchCanvas = createCanvas(width, height, "webgl");
-    sketchCanvas.parent('backgroundCanvas');
+    var sketchCanvas = createCanvas(width, width*.2, "webgl");
+    sketchCanvas.parent('broad-canvas');
 
     cols = w / scl;
     rows = h / scl;
@@ -37,17 +28,18 @@ function setup() {
         terrain[x] = [];
     }
 
-
 }
 
 function draw() {
 
-    flying += panel.getValue('flyingRate');
+    flying += 0.02; 
     var yoff = flying;
+    var peak = 145;
+    var valley = -500;
     for (var y = 0; y < rows; y++) {
         var xoff = 0;
         for (var x = 0; x < cols; x++) {
-            terrain[x][y] = map(noise(xoff, yoff), 0, 1, panel.getValue("valley"), panel.getValue("peak"));
+            terrain[x][y] = map(noise(xoff, yoff), 0, 1, peak, valley); 
             xoff += 0.2;
         }
         yoff += 0.2;

@@ -4,3 +4,5 @@ Software credits to:
 Jekyll
 Chris Bamborough
 foremspree
+Daniel Shiffman
+Ira Greenberg
