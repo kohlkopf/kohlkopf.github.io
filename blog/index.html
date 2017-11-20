@@ -4,7 +4,6 @@ title: Blog
 ---
 
 <div class="wrapper">
-    <section>
         {% for post in site.posts %}
             <h2 class="post-title"><a href="{{ post.url }}">{{ post.title }}</a></h2>
             <p class="post-meta">
@@ -21,5 +20,4 @@ title: Blog
 
         {% endfor %}
         
-    </section>
 </div>

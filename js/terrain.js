@@ -12,7 +12,7 @@ var flying = 0;
 var terrain;
 
 
-var panelParent = document.getElementById('myCanvas');
+var panelParent = document.getElementById('backgroundCanvas');
 
 var panel = QuickSettings.create(600, 100, 'Terrain Controls')
     .addRange("flyingRate", 0.01, 0.5, 0.05, 0.01, draw)

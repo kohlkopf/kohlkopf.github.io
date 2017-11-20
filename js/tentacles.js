@@ -1,13 +1,13 @@
 /* Length of the tentacle */
-var len = 60;
+var len = 60
 
 function setup() {
 
-  var canvasDiv = document.getElementById('backgroundCanvas');
+  var canvasDiv = document.getElementById('pane');
   var width = canvasDiv.clientWidth;
   var height = canvasDiv.clientHeight;
   
-  var sketchCanvas = createCanvas(width,height);
+  var sketchCanvas = createCanvas(width, height);
   sketchCanvas.parent('myCanvas');
 
   stroke(135, 146, 131);
