@@ -3,8 +3,10 @@ layout: default
 ---
 
 # Hello
-### My name is Kohl Kinning
-This website is still under construction, but since you're here here is a little bit about me...
+### My name is Kohl Kinning. I am...
+
+
+...an agile and flexible biologist with multidisciplinary interest in Biology, Computer Science, and the practical combination of the two. Efficient and at-home in fast paced environments. Proactive self-starter with excellent relationship building skills. Passionate to learn new skills in diverse areas. Interested in obtaining an internship in industry or research setting.
 
 ## Education
 ---
