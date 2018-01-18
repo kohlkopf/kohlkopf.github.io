@@ -5,7 +5,7 @@ layout: default
 # Hello
 ### My name is Kohl Kinning. I am...
 
-...an agile and flexible biologist with multidisciplinary interest and experience in Biology, Computer Science, and their practical combination. Efficient and comfortable in fast paced environments. Proactive self-starter with excellent relationship building skills. Passionate to learn new skills in diverse areas. Interested in obtaining an internship in industry or academic setting.
+...an agile and flexible biologist with multidisciplinary interest and experience in Biology, Computer Science, and their practical combination. Efficient and comfortable in fast paced environments. Proactive self-starter with excellent relationship building skills. Passionate to learn new skills in diverse areas. Interested in obtaining an internship in industry or academic setting. 
 
 ## Education
 ---
@@ -19,22 +19,24 @@ layout: default
 :   **Bachelor of Arts, Biology** / *Lewis & Clark College* 
 
     *Minor: Computer Science*
+    *Upper level courses: Molecular Biology, Phylogenetics, Architecture & Assembly Language, Big Data*
 
 ## Research
 ---
 
-**Graduate Group Research Assistant** / *Stowers Institute, Dr. Yu Lab* / Eugene, OR
+**Single Cell Analysis of the Olfactory Epithelium** / *Stowers Institute, Dr. Yu Lab* / Eugene, OR
 
-[Single Cell Analysis of the Olfactory Epithelium]
+
+Graduate Group Research Assistant
 
 + Implemented quality control of read data
 + Performed differential expression analysis
 + Elucidated specific marker genes of single cell data
 
 
-**Undergraduate Group Research Project** / *Lewis & Clark College* / Portland, OR 
+**Horizontal Gene Transfer and the Gain of PKSI in Lichens** / *Lewis & Clark College* / Portland, OR 
 
-[Horizontal Gene Transfer as a Mechanism for the Gain of Polyketide Synthase Type I Gene in Lichens]
+Undergraduate Class Research Project
 
 + Performed preliminary phylogenetic analysis utilizing Bayesian and maximum likelihood methods of inference for phylogeny
 + Drafted a mock grant proposal for the project
@@ -66,14 +68,15 @@ layout: default
 
 **Bicycle Mechanic** / *Sellwood Cycle Repair* / Portland, OR
 
-+ Demonstrated initiative, climbed from no experience to trusted full mechanic
++ Demonstrated initiative, began with no experience and became a trusted mechanic
 + Diagnosed and repaired mechanical issues with scientific methodology
-+ Co-operated with co-dependence with a team of 14 employees 
++ Cooperated daily with a team of 14 employees
 
 **Curatorial Assistant** / *Lewis & Clark College* / Portland, OR
 
 + Revitalized a Natural History Collection belonging to the school
 + Developed a database (MS Access, MySQL) for data storage
++ Developed a public-facing web interface for the collection
 + Learned current curatorial standards
 
 **System Technician/IT Helpdesk** / *RK Mechanical Inc.* / Denver, CO
