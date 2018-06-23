@@ -44,27 +44,31 @@ Undergraduate Class Research Project
 ## Skills
 ---
 
-| Languages | Tools     | Analyses                      |
-|:---------:|----------:|:-----------------------------:|
-| Python    | git       | sequencing quality control    |
-| R         | bash      | Principal Components analysis |
-| Bash      | SLURM     | tsne analysis                 |
-| MySQL     | Jupyter   | differential expression       |
-| PHP       | R Studio  | Bayesian inference phylogeny  |
-| HTML      | Mr. Bayes | genome annotation             |
-| LaTeX     | MEGA      |                               |
-| Arduino   | RNA-Seq   |                               |
-| Markdown  |           |                               |
-
-
+| Languages | Tools        | Analyses                        |
+|:---------:|-------------:|:-------------------------------:|
+| R         | bash         | single cell transcriptomics     |
+| Python    | git          | variant detection               |
+| bash      | GATK         | sequencing quality control      |
+| MySQL     | Apache SPARK | principal components analysis   |
+| PHP       | SLURM        | t-SNE analysis                  |
+| HTML      | Jupyter      | differential expression         |
+| LaTeX     | RMarkdown    | Bayesian inference phylogeny    |
+| Arduino   | Mr. Bayes    |                                 |
+|           | MEGA         |                                 |
+   
 **Bioinformatics and Genomics Workshop for Undergraduates** / *Reed College*
 
 **LaTeX for Scientific Writing Workshop** / *Lewis & Clark College*
 
 **FAA Private Pilot License** / Broomfield, CO
 
-## Past Employment
+## Employment
 ---
+**Graduate Researcher** / *Stowers Institute for Medical Research* / Kansas City, MO
+
++ Gained experienced as a bioinformatics data analyst
++ Conducted research on the olfactory system in a model organism
++ Performed collaborative research in a massively interdisciplinary lab 
 
 **Bicycle Mechanic** / *Sellwood Cycle Repair* / Portland, OR
 
