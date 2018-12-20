@@ -55,16 +55,16 @@ The site is now being served at http://127.0.0.1:4000.
 
 ![console](/img/2018-12-20-jekyll_dev/console.png)
 
-If you were following another Jekyll tutorial, you'd probably open up a web browser and navigated to http://127.0.0.1:4000 where you could see interact with your site. Instead of that, we'll  the built in Viewer to interact with the site. Switch to the Console tab with the shortcut ⌃2 or just by clicking on it. Install the `devtools` R package:
+If you were following another Jekyll tutorial, you'd probably open up a web browser and navigated to http://127.0.0.1:4000 where you could see interact with your site. Instead of that, we'll  the built in Viewer to interact with the site. Switch to the Console tab with the shortcut ⌃2 or just by clicking on it. Install the `rstudioapi` R package:
 
 ```{r}
-install.packages("devtools")
+install.packages("rstudioapi")
 ```
 
-Then run `viewer()`, using the server address being used by Jekyll:
+Then run `rstudioapi::viewer()`, using the server address being used by Jekyll:
 
 ```{r}
-viewer(url = "http://127.0.0.1:4000")
+rstudioapi::viewer(url = "http://127.0.0.1:4000")
 ```
 
 You should now see be able to interact with your site from within RStudio. Be sure to save your file, which Jekyll will then use to generate the update site. The Viewer pane will not automatically refresh, you'll need to navigate around to force reload.
