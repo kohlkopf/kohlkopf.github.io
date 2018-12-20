@@ -21,7 +21,7 @@ View your locally served website as soon as you hit save.
 
 ### It has a fully featured editor
 
-RStudio is built for coding. It has syntax highlighting and useful development shortcuts.
+RStudio is built for coding. It has syntax highlighting and useful development shortcuts. It even has spell-check
 
 ---
 
@@ -29,7 +29,7 @@ RStudio is built for coding. It has syntax highlighting and useful development s
 
 ![terminal](/img/2018-12-20-jekyll_dev/terminal.png)
 
-Assuming you already have Ruby installed and a Jekyll site running, kick up an RStudio session. Shift the focus to **Terminal** with the shortcut ⌥⇧ T or just click on it.  CStill in the terminal,  change to your project directory and run:
+Assuming you already have Ruby installed and a Jekyll site running, kick up an RStudio session. Shift the focus to **Terminal** with the shortcut ⌥⇧ T or just click on it. Still in the terminal,  change to your project directory and run:
 
 ```{bash}
 $ jekyll serve
@@ -51,11 +51,11 @@ Configuration file: /Users/kohlkopf/Documents/kohlkopf.github.io/_config.yml
 
 The site is now being served at http://127.0.0.1:4000.
 
-# 2. Viewer in RStudio
+# 2. Viewer  in RStudio
 
 ![console](/img/2018-12-20-jekyll_dev/console.png)
 
-If you were following another Jekyll tutorial, you'd probably open up a web browser and navigated to http://127.0.0.1:4000 where you could see interact with your site. Instead of that, we'll ustilize the built in Viewer to interact with the site. Switch to the Console tab with the shortcut or just by clicking on it. Install the `devtools` R package:
+If you were following another Jekyll tutorial, you'd probably open up a web browser and navigated to http://127.0.0.1:4000 where you could see interact with your site. Instead of that, we'll  the built in Viewer to interact with the site. Switch to the Console tab with the shortcut ⌃2 or just by clicking on it. Install the `devtools` R package:
 
 ```{r}
 install.packages("devtools")
@@ -67,7 +67,7 @@ Then run `viewer()`, using the server address being used by Jekyll:
 viewer(url = "http://127.0.0.1:4000")
 ```
 
-You should now see be able to interact with yoursite from within RStudio. Be sure to save your file, which Jekyll will then use to generate the upadate site. The Viewer pane will not automatically refresh, you'll need to navigate around to force reload.
+You should now see be able to interact with your site from within RStudio. Be sure to save your file, which Jekyll will then use to generate the update site. The Viewer pane will not automatically refresh, you'll need to navigate around to force reload.
 
 ![window](/img/2018-12-20-jekyll_dev/window.png)
 
