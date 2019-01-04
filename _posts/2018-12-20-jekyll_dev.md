@@ -51,7 +51,7 @@ Configuration file: /Users/kohlkopf/Documents/kohlkopf.github.io/_config.yml
 
 The site is now being served at http://127.0.0.1:4000.
 
-# 2. Viewer  in RStudio
+# 2. Viewer pane in RStudio
 
 ![console](/img/2018-12-20-jekyll_dev/console.png)
 
