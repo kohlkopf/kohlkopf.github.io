@@ -5,15 +5,13 @@ layout: default
 # Hello
 ### My name is Kohl Kinning. I am...
 
-...an agile and flexible biologist with multidisciplinary interest and  experience in Biology, Computer Science, and their practical combination. Efficient and comfortable in fast paced environments. Proactive self-starter with excellent relationship building skills. Passionate to learn new skills in diverse areas. Driven to discover novel and creative applications of existing tools.
+...an agile and flexible biologist with multidisciplinary interest and experience in Biology, Computer Science, and their practical combination. Efficient and comfortable in fast paced environments. Proactive self-starter with excellent relationship building skills. Passionate to learn new skills in diverse areas. Interested in obtaining an internship in industry or academic setting. 
 
 ## Education
 ---
 
-2017-2018
-:   **Master of Science, Biology** / *University of Oregon*
-
-    **Bioinformatics and Applied Genomics Master's Program**
+2017-2018 (expected)
+:   **Bioinformatics and Applied Genomics Master's Program** / *University of Oregon*
 
     *Research project: Single Cell Analysis of the Olfactory Epithelium*
 
@@ -21,7 +19,6 @@ layout: default
 :   **Bachelor of Arts, Biology** / *Lewis & Clark College* 
 
     *Minor: Computer Science*
-    
     *Upper level courses: Molecular Biology, Phylogenetics, Architecture & Assembly Language, Big Data*
 
 ## Research
@@ -47,17 +44,17 @@ Undergraduate Class Research Project
 ## Skills
 ---
 
-| Languages | Tools        | Analyses                         |
-|:---------:|-------------:|:--------------------------------:|
-| R         | bash         | single cell transcriptomics      |
-| Python    | git          | variant detection                |
-| bash      | GATK         | quantitative trait loci analysis |
-| MySQL     | Apache SPARK | sequencing quality control       |
-| PHP       | SLURM        | principal components analysis    |
-| HTML      | Jupyter      | t-SNE analysis                   |
-| LaTeX     | RMarkdown    | differential expression          |
-| Arduino   | MEGA         | Bayesian inference phylogeny     |
-
+| Languages | Tools        | Analyses                        |
+|:---------:|-------------:|:-------------------------------:|
+| R         | bash         | single cell transcriptomics     |
+| Python    | git          | variant detection               |
+| bash      | GATK         | sequencing quality control      |
+| MySQL     | Apache SPARK | principal components analysis   |
+| PHP       | SLURM        | t-SNE analysis                  |
+| HTML      | Jupyter      | differential expression         |
+| LaTeX     | RMarkdown    | Bayesian inference phylogeny    |
+| Arduino   | Mr. Bayes    |                                 |
+|           | MEGA         |                                 |
    
 **Bioinformatics and Genomics Workshop for Undergraduates** / *Reed College*
 
@@ -67,9 +64,9 @@ Undergraduate Class Research Project
 
 ## Employment
 ---
-**Bioinformaticist** / *Stowers Institute for Medical Research* / Kansas City, MO
+**Graduate Researcher** / *Stowers Institute for Medical Research* / Kansas City, MO
 
-+ Gained experienced as a bioinformatics data analyst in neuroscience
++ Gained experienced as a bioinformatics data analyst
 + Conducted research on the olfactory system in a model organism
 + Performed collaborative research in a massively interdisciplinary lab 
 
