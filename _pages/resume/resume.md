@@ -1,5 +1,9 @@
 ---
+title: "Kohl Kinning -- Resume"
 layout: default
+excerpt: "Kohl Kinning -- Resume."
+sitemap: false
+permalink: /resume/
 ---
 
 # Hello

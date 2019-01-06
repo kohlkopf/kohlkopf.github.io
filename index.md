@@ -1,5 +1,8 @@
 ---
+title: "Kohl Kinning -- Home"
 layout: default
+excerpt: "Kohl Kinning -- Home."
+sitemap: false
 ---
 
 # Hello
