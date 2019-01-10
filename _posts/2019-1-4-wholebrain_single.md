@@ -11,7 +11,7 @@ WholeBrain was conceived and created by Daniel Fürth, during his PhD in Konstan
 
 Daniel is now a postdoctoral researcher in Jay Lee's lab at Cold Spring Harbor Laboratory working on next-generation of in situ sequencing methods.
 
-I've written up a tutorial for processing a single section (guided by Daniel's video) for use by members of my lab and others who may find it useful.
+I've written up a tutorial for processing a single section (guided by Daniel's video) for use by members of my lab and others who may find it useful. Find the accompanying script in my [github repo](https://github.com/kohlkopf/wholebrain_scripts/blob/master/single_image_script.R).
 
 ---
 
@@ -53,7 +53,7 @@ This step will set up the filter for calling neurons. Don't worry about detectio
 neuron_seg <- segment(input=image, channel=2)
 ```
 
-![neuron_seg_alt](/img/2019-1-4-wholebrain_single/neuron_seg_alt.png)
+![](/img/2019-1-4-wholebrain_single/neuron_seg_alt.png)
 
 When you are done, hit the Esc or Q key to exit and save these parameters to the `neuron_seg` object. You'll see some output like the following in the console:
 
@@ -79,7 +79,7 @@ brain_seg <- segment(input=image, channel=0)
 brain_seg$filter$resize <- 0.06
 ```
 
-![brain_seg_alt](/img/2019-1-4-wholebrain_single/brain_seg_alt.png)
+![](/img/2019-1-4-wholebrain_single/brain_seg_alt.png)
 
 ---
 
@@ -91,15 +91,15 @@ Now we'll align the section to the atlas and count the neurons. You'll have to m
 imshow(image)
 ```
 
-![imshow](/img/2019-1-4-wholebrain_single/imshow.png)
+![](/img/2019-1-4-wholebrain_single/imshow.png)
 
 Now that you have your bregma, you're ready to register. I've added some interactivity to this. There will be an automatic registration process with numbered points. You'll see a message in the R console, `Input a vector of points to remove, enter if OK: `. 
 
-![interactivity](/img/2019-1-4-wholebrain_single/reg_rem_pounts.png)
+![](/img/2019-1-4-wholebrain_single/reg_rem_pounts.png)
 
 The first thing you'll is the software attempt at auto-registration. I find that most of the the outline if registered well but that the inner part need some help. 
 
-![auto_reg](/img/2019-1-4-wholebrain_single/auto_reg.png)
+![](/img/2019-1-4-wholebrain_single/auto_reg.png)
 
 Here you can remove any erroneous automatically added registration points. You can then add your own registration points to the image. Add one on the right section image first, then add a corresponding point to the atlas schematic on the left. I find the algorithm find the outline pretty well but lining up the ventricles and other more central features requires manual work. It helps to add a few to the center line. Right click when you are done adding points.
 
@@ -145,7 +145,7 @@ Compare right and left hemisphere expression by region in a plot format.
 dot.plot(dataset)
 ```
 
-![dotplot](/img/2019-1-4-wholebrain_single/dotplot.png)
+![](/img/2019-1-4-wholebrain_single/dotplot.png)
 
 # Schematic
 
@@ -154,7 +154,7 @@ Visualize called neurons overlain on the atlas.
 schematic.plot(dataset)
 ```
 
-![schematic](/img/2019-1-4-wholebrain_single/schematic_plot.png)
+![](/img/2019-1-4-wholebrain_single/schematic_plot.png)
 
 # Webmap
 
@@ -166,7 +166,7 @@ pixel.resolution<-1 #1 micron
 makewebmap(img = image, filter = brain_seg$filter, registration = regi, dataset = dataset, scale = 0.64, fluorophore = "tdTomato")
 ```
 
-![terminal](/img/2019-1-4-wholebrain_single/webmap.png)
+![](/img/2019-1-4-wholebrain_single/webmap.png)
 
 # Glassbrain
 
@@ -177,4 +177,4 @@ glassbrain(dataset, plane="sagittal", laterality=FALSE)
 planes3d(0,0,1, col = 'lightblue', alpha = 0.9)
 ```
 
-![glassbrain](/img/2019-1-4-wholebrain_single/glassbrain.png)
+![](/img/2019-1-4-wholebrain_single/glassbrain.png)
