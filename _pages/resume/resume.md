@@ -51,16 +51,16 @@ Undergraduate Class Research Project
 ## Skills
 ---
 
-| Languages | Tools        | Analyses                         |
-|:---------:|-------------:|:--------------------------------:|
-| R         | bash         | single cell transcriptomics      |
-| Python    | git          | variant detection                |
-| bash      | GATK         | quantitative trait loci analysis |
-| MySQL     | Apache SPARK | sequencing quality control       |
-| PHP       | SLURM        | principal components analysis    |
-| HTML      | Jupyter      | t-SNE analysis                   |
-| LaTeX     | RMarkdown    | differential expression          |
-| Arduino   | MEGA         | Bayesian inference phylogeny     |
+| Languages | Tools         | Analyses                         |
+|:---------:|:-------------:|:--------------------------------:|
+| R         | bash          | single cell transcriptomics      |
+| Python    | git           | variant detection                |
+| bash      | GATK          | quantitative trait loci analysis |
+| MySQL     | Apache SPARK  | sequencing quality control       |
+| PHP       | SLURM         | principal components analysis    |
+| HTML      | Jupyter       | t-SNE analysis                   |
+| LaTeX     | RMarkdown     | differential expression          |
+| Arduino   | MEGA          | Bayesian inference phylogeny     |
 
    
 **Bioinformatics and Genomics Workshop for Undergraduates** / *Reed College*
