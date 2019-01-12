@@ -9,7 +9,7 @@ permalink: /resume/
 # Hello
 ### My name is Kohl Kinning. I am...
 
-...an agile and flexible biologist with multidisciplinary interest and  experience in Biology, Computer Science, and their practical combination. Efficient and comfortable in fast paced environments. Proactive self-starter with excellent relationship building skills. Passionate to learn new skills in diverse areas. Driven to discover novel and creative applications of existing tools.
+...an agile and flexible biologist with multidisciplinary interest and experience in Biology, Computer Science, and their practical combination. Efficient and comfortable in fast paced environments. Proactive self-starter with excellent relationship building skills. Passionate to learn new skills in diverse areas. Driven to discover novel and creative applications of existing tools.
 
 ## Education
 ---

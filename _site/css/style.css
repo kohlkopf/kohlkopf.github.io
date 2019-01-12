@@ -217,19 +217,20 @@ nav ul {
   background: #fff;
   border-radius:5px;
   border:1px solid #e5e5e5;
-  width:272px;
+  width:274px;
 }
 
 nav li {
   float:left;
   height:24px;
-  width:67px;
+  width:54px;
   border-right:1px solid #e5e5e5;
 }
 
 nav li:last-child {
   border-right:none;
-  width:68px;
+  width:54px;
+ 
 }
 
 nav li a {
@@ -239,7 +240,7 @@ nav li a {
   text-align:center;
   line-height:24px;
   height:24px;
-  font-size:13px;
+  font-size:12px;
 }
 
 nav li:first-child a {
