@@ -1,5 +1,5 @@
 ---
-title: "Kohl Kinning -- Resume"
+title: "Resume"
 layout: default
 excerpt: "Kohl Kinning -- Resume."
 sitemap: false

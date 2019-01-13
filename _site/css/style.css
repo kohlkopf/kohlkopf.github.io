@@ -439,6 +439,54 @@ a.post-banner:hover { background-size: auto 104%; }
   margin-bottom: 2em;
 }
 
+/* workbook Content */
+
+.workbook-title {
+  margin-bottom: 0;
+}
+.workbook-meta,
+.workbook-meta a {
+  color: #aaa;
+  margin-bottom: 0;
+  white-space: nowrap;
+},
+.workbook-meta a:hover,
+.workbook-meta a:active {
+  text-decoration: underline;
+}
+
+.workbook-banner {
+  display: block;
+  background: #000 url('/img/workbook-banners/no-image.gif') center;
+  background-size: auto 100%;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  overflow: hidden;
+  margin: 0.5em 0;
+  width: 100%;
+  max-height: 150px;
+}
+.workbook-banner.no-image,
+.workbook-banner.no-image:hover {
+  background-size: 100% 100% !important;
+}
+.workbook-banner > img {
+  display: block;
+  visibility: hidden;
+  margin: 0;
+  padding: 0;
+  height: 0;
+  width: 100%;
+  padding-bottom: 33%;
+}
+a.workbook-banner { -webkit-transition: all .2s ease-in-out; }
+a.workbook-banner:hover { background-size: auto 104%; }
+
+.workbook-excerpt {
+  margin-bottom: 2em;
+}
+
 /* Footer / Sidebar */
 
 footer {

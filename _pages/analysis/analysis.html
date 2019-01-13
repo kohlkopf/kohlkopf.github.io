@@ -1,5 +1,5 @@
 ---
-title: "Kohl Kinning -- Analysis"
+title: "Analysis"
 layout: default
 excerpt: "Kohl Kinning -- Analysis."
 sitemap: false
@@ -8,18 +8,18 @@ permalink: /analysis/
 
 <div class="wrapper">
         {% for workbook in site.workbooks %}
-            <h2 class="post-title"><a href="{{ post.url }}">{{ post.title }}</a></h2>
-            <p class="post-meta">
-                {{ post.date | date_to_string }}
+            <h2 class="workbook-title"><a href="{{ workbook.url }}">{{ workbook.title }}</a></h2>
+            <p class="workbook-meta">
+                {{ workbook.date | date_to_string }}
             </p>
 
-            {% if post.image %}
-            <a href="{{ post.url }}">
-            <img src="{{ post.image }}" alt="{{ post.title }}" />
+            {% if workbook.image %}
+            <a href="{{ workbook.url }}">
+            <img src="{{ workbook.image }}" alt="{{ workbook.title }}" />
             </a>
             {% endif %}
 
-            <p class="post-excerpt">{{ post.excerpt | strip_html }} [<a style="color:red" href="{{ post.url }}">read more</a>]</p>
+            <p class="workbook-excerpt">{{ workbook.excerpt | strip_html }} [<a style="color:red" href="{{ workbook.url }}">read more</a>]</p>
 
         {% endfor %}
         
