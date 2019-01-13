@@ -1,0 +1,644 @@
+---
+title: "Xie Neuron Analysis | Seurat"
+subtitle: "Dr. Ron Yu | Stowers Institute of Medical Research"
+author: "Kohl Kinning"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_notebook:
+    fig_height: 4
+    theme: cosmo
+    toc: yes
+    toc_float:
+      collapsed: yes
+abstract: |
+    Using data generated in the Xie lab for the paper *Olfactory sensory neurons transiently express multiple olfactory receptors during developement,* perform single cell analysis. The data was generated with the Smart-Seq2 protocol and sequenced with a HiSeq. The data are 185 fastq libraries, each corresponding with a single cell. We have a mixture of paired-end and unpaired reads.
+---
+
+# Preamble
+
+```{r}
+library(Seurat)
+library(dplyr)
+library(magrittr)
+library(ggplot2)
+library(gridExtra)
+library(grid)
+```
+
+# Data Wrangling
+
+# Fastq file trimming
+
+The adapters have already been trimmed from the sequences during the demultiplexing step. There are low amounts of over-represented sequences (0.0%-0.3%).
+
+# Convert the fastqs to fastas
+
+Conversion is not necessary, but decompressed files will result in quicker alignment.
+
+Some of the reads are paired-end.
+
+```{bash, eval=FALSE, include=FALSE}
+#!/bin/bash
+# conv_fastq_fasta.sh
+
+wd="/l/Yu/YuLab/Bioinformatics/projects/single_cell/xie"
+indir="${wd}/sequences/fastq"
+outdir="${wd}/sequences/fasta"
+
+# Paired
+samples=$(ls $indir | grep ".fastq" | sed 's/_.*//' | uniq)
+fasta=$(ls $outdir)
+
+for SAMPLE in $samples; do
+        FASTQ_1=${SAMPLE}_1
+        FASTQ_2=${SAMPLE}_2
+        touch $outdir/${FASTQ_1}.fa
+        touch $outdir/${FASTQ_2}.fa
+        zcat $indir/${FASTQ_1}.fastq.gz | sed -n '1~4s/^@/>/p;2~4p' > $outdir/${FASTQ_1}.fa
+        zcat $indir/${FASTQ_2}.fastq.gz | sed -n '1~4s/^@/>/p;2~4p' > $outdir/${FASTQ_2}.fa
+done
+exit 0
+```
+
+# Align the reads
+
+Using STAR, align the reads. Begin by building an index with the mouse genome from Ensemble (Mus_musculus.GRCm38.dna.primary_assembly.fa.gz) and the gene annotations (Mus_musculus.GRCm38.92.gtf.gz).
+
+## Paired and single end reads
+
+The sequence files provided are both paired end and unpaired reads. We will build a different index for the alignment of these, so we separate. the paired-end reads from single-end reads.
+
+```{bash}
+$ cut -f 10 /Volumes/yulab/Bioinformatics/projects/single_cell/xie/resources/SRP065920.txt > tmp
+$ cut -f 6 /Volumes/yulab/Bioinformatics/projects/single_cell/xie/resources/SRP065920.txt > meta.txt
+$ paste meta.txt tmp > meta_new.txt 
+$ paired=$(grep "PAIRED" /l/Yu/YuLab/Bioinformatics/projects/single_cell/xie/resources/paired_single_meta.txt | cut -f 1)
+$ grep -lir ${paired} sequences/fasta | xargs mv -t sequences/fasta/paired
+```
+
+## Build two indexes
+
+```{bash}
+#!/bin/bash
+#############################################################################
+#    Filename: star_index.sh                                                #
+# Maintainers: Kyle M. Duyck, Carter Long                                   #
+#                                                                           #
+#     Purpose: Creates genome index for STAR aligner                        #
+#############################################################################
+
+function usage {
+    echo ""
+}
+
+# Command line argument parser
+while getopts ":o:g:a:n:h:" opt; do
+    case $opt in
+        o) ODIR="$OPTARG"
+        ;;
+        g) GENOME="$OPTARG"
+        ;;
+        a) ANNOTATION="$OPTARG"
+        ;;
+        n) NTHREADS="$OPTARG"
+        ;;
+        h) OVERHANG="$OPTARG"
+        ;;
+        \?) echo "Invalid option -$OPTARG" >&2
+        ;;
+    esac
+done
+
+mkdir $ODIR
+
+STAR --runThreadN $NTHREADS --runMode genomeGenerate --genomeDir $ODIR \
+--genomeFastaFiles $GENOME --sjdbOverhang $OVERHANG --sjdbGTFfile $ANNOTATION \
+--limitGenomeGenerateRAM 200000000000
+
+```
+
+The difference below is in the --sjdbOverhang flag. This specifies the length of the genomic sequence around the annotated junction
+to be used in constructing the splice junctions database. It should be 1 less than the read length. In our paired end data the reads have length 50 while in our unpaired data the reads have length 100.
+
+```{bash}
+$ ../paired../star_index.sh -o index -g ../genome/Mus_musculus.GRCm38.dna.primary_assembly.fa -a ../genome/Mus_musculus.GRCm38.92.gtf -n 8 -h 49
+$ ../single../star_index.sh -o index -g ../genome/Mus_musculus.GRCm38.dna.primary_assembly.fa -a ../genome/Mus_musculus.GRCm38.92.gtf -n 8 -h 99
+```
+
+
+## Align the reads
+
+```{bash}
+#!/bin/bash
+#############################################################################
+#    Filename: star_alignment.sh                                            #
+# Maintainers: Kyle M. Duyck, Carter Long, Kohl Kinning                     #
+#                                                                           #
+#    Purpose: Align set of RNA seq samples to genome of interest, FASTA     #
+#             version w/ naming convention SRR2911115_1.fa, SRR2911115_2.fa #
+#############################################################################
+
+function usage {
+    echo ""
+}
+
+# Command line argument parser
+while getopts ":i:o:r:g:n:e:" opt; do
+    case $opt in
+        i) indir="$OPTARG"
+        ;;
+        o) outdir="$OPTARG"
+        ;;
+        r) GENOME="$OPTARG"
+        ;;
+        g) GTF="$OPTARG"
+        ;;
+        n) NTHREADS="$OPTARG"
+        ;;
+        e) MISMATCH="$OPTARG"
+        ;;
+        \?) echo "Invalid option -$OPTARG" >&2
+        ;;
+    esac
+done
+
+mkdir -p $outdir
+PARAMS="--runMode alignReads \
+--sjdbGTFfile ${GTF} \
+--runThreadN ${NTHREADS} \
+--quantMode GeneCounts \
+--genomeLoad NoSharedMemory \
+--outSAMtype BAM SortedByCoordinate \
+--outSAMprimaryFlag OneBestScore
+--outSAMreadID Standard \
+--outWigType bedGraph \
+--outWigStrand Stranded \
+--outWigNorm RPM \
+--outFilterMultimapScoreRange 1 \
+--outFilterMultimapNmax 10000 \
+--outFilterMismatchNoverLmax $MISMATCH \
+--outFilterIntronMotifs None \
+--sjdbGTFtagExonParentGene gene_id \
+--outStd Log \
+--outFilterType BySJout \
+--alignSJoverhangMin 8 \
+--alignSJDBoverhangMin 1"
+#--chimSegmentMin 15
+
+# Get list of sample names
+samples=$(ls $indir | grep -E ".fa" | sed -E 's/(.+)(_[1-2])(.fa)/\1\3/' | uniq)
+aligned=$(ls $outdir)
+for SAMPLE in $samples; do
+    if [[ ${aligned}[*] =~ $SAMPLE ]]; then 
+        echo "Already aligned $SAMPLE"
+    else
+        echo "Aligning $SAMPLE"
+        # Make directory for sample and move to it
+        ODIR=${outdir}/${SAMPLE}
+        mkdir ${ODIR}
+        FASTA_P1=${indir}/$(sed -E 's/([A-Z0-9]+)(.fa)/\1_1\2/' <<< $SAMPLE)
+        FASTA_P2=${indir}/$(sed -E 's/([A-Z0-9]+)(.fa)/\1_2\2/' <<< $SAMPLE)
+        # Check if paired end reads
+        if [[ -e ${FASTA_P2} ]];then
+            # Paired End Mapping
+            STAR --genomeDir ${GENOME} --readFilesIn ${FASTA_P1} ${FASTA_P2} \
+            --outFileNamePrefix ${ODIR}/P. \
+            ${PARAMS} > ${ODIR}/P.STAR.files.run.log
+        else
+            # Single End Mapping
+            STAR --genomeDir ${GENOME} --readFilesIn ${FASTA_P1} \
+            --outFileNamePrefix ${ODIR}/U. \
+            ${PARAMS} > ${ODIR}/U.STAR.files.run.log
+
+            # Convert to BAM
+            #samtools view -Sb ${ODIR}/U.Aligned.out.sam > ${ODIR}/final.Aligned.out.bam
+            # Sort
+            #samtools sort -T ${ODIR}/tempsort -o ${ODIR}/final.sorted.Aligned.out.bam \
+            #${ODIR}/final.Aligned.out.bam
+            # Index
+            #samtools index ${ODIR}/final.sorted.Aligned.out.bam
+        fi
+    aligned=$(ls $outdir)
+    fi
+done
+
+exit
+```
+
+Then align the reads. -outFilterMismatchNoverLmax is set to 0.04, it is the max number of mismatches per pair relative to read length. This script had been adapted to work with fastas and with the naming convention of the files provided.
+
+```{bash}
+$ ../paired../star_alignment.sh -i /l/Yu/YuLab/Bioinformatics/projects/single_cell/xie/sequences/fasta/paired -o aligned -r index -g ../genome/Mus_musculus.GRCm38.92.gtf -n 8 -e 0.04
+
+$ ../single../star_alignment.sh -i /l/Yu/YuLab/Bioinformatics/projects/single_cell/xie/sequences/fasta/single -o aligned -r index -g ../genome/Mus_musculus.GRCm38.92.gtf -n 8 -e 0.04
+```
+
+# Gene counts
+
+Our paired-end data is non-strand specific.
+
+We used the --quantMode genecounts option during alignment. This gives us a table of counts per gene for each cell. We need to compile all of this information in to one counts matrix, with cells on one axis and genes on the other. This will be a left join, with the genes as the key column. All of the counts files have the same gene information so no padding will be necessary. Additionally, they are already sorted.
+
+## Prepend cell library information to the read counts
+
+Place them in the `counts` folder. The command varies slightly due to the difference in naming between paired and unpaired reads. 
+
+```{bash}
+# paired
+$ ls * | find . -type f -name "*.ReadsPerGene.out.tab" -printf "/%P\n" | while read FILE ; do DIR=$(dirname "$FILE" ); cp ."$FILE" ."$DIR""${DIR%.fa}"_ReadsPerGene.out.tab;done
+
+# single
+$ ls * | find . -type f -name "*.ReadsPerGene.out.tab" -printf "/%P\n" | while read FILE ; do DIR=$(dirname "$FILE" ); cp ."$FILE" ."$DIR""${DIR%_1.fa}"_ReadsPerGene.out.tab;done
+```
+
+## Move counts files
+
+Collect all of the counts files from all of the libraries. Take the gene ID and the first counts column only. The additional counts columns are for strand-specific protocols. 
+
+```{bash} 
+$ ls -1 *.tab | while read file; do cat $file  | tail -n +5 | cut -f 1,2 > ${file%_ReadsPerGene.out.tab}.txt; done
+```
+
+## Add library information
+
+Add a line to the beginning of each count file indicating which library it came from.
+
+```{bash}
+$ ls -1 | while read file; do sed -i '1i Library\t'${file:0:10}'' $file; done
+```
+
+## Collate into one count file
+
+Manually make the first join. Create a list of files to be combined iteratively. Join each file in the file list to the running counts table. Save the temporary file to a complete_counts file.
+
+```{bash}
+$ join SRR2911102.txt SRR2911103.txt > tmp.tmp
+$ ls -1 -I SRR2911102.txt -I SRR2911103.txt -I tmp.tmp > files.txt
+$ cat files.txt | while read f; do join tmp.tmp $f > tmpf; mv tmpf tmp.tmp; done
+$ mv tmp.tmp complete_counts.txt
+```
+
+## Gene names
+
+For easier downstream analysis, convert the Ensembl stable IDs to gene names. Stable IDs are converted to gene names with Ensembl Biomart. Retain a copy of the stable IDs counts table. First sort the files, confirm that they are the same number of lines, and insert the gene name column. If unexpected tabs arise, replace them with a space.
+
+```{bash}
+$ awk 'NR==1; NR > 1 {print $0 | "sort -k 1,1"}' complete_counts_id.txt > sorted_id_counts.txt
+$ awk 'NR==1; NR > 1 {print $0 | "sort -k 1,1"}' gene_id_name.txt > sorted_gene_id_name.txt
+$ cut -f2 sorted_gene_id_name.txt > sorted_gene_name.txt
+$ paste sorted_gene_name.txt <(cut -d ' ' -f2- sorted_id_counts.txt) > counts_gene_name.txt
+$ tr '\t' ' ' < counts_gene_name.txt > complete_counts_gene_name.txt
+```
+
+The conversion causes duplicate row names! There are 72 genes which have duplicates. In every column (single cell library) for these duplicate genes there are zero counts. I remove the duplicate lines completely.
+
+```{bash}
+$ wc complete_counts_gene_name.txt 
+    53802 10007171 21242386 complete_counts_gene_name.txt
+$ awk '!seen[$0]++' complete_counts_gene_name.txt > dedup_complete_counts_gene_name.txt 
+$ wc dedup_complete_counts_gene_name.txt 
+    53727  9993222 21214026 dedup_complete_counts_gene_name.txt
+```
+
+_______________________________________________________________
+# Seurat Analysis
+
+# Input
+
+Though I have robustly removed duplicate row names from the data before importing, 'read.table()' thinks there are duplicates. The following command lists all duplicates. There are zero! As a work around, give all "duplicate" rows a unique name by appending a suffix.
+````{r}
+complete_counts <- read.table("~/xie/align/counts/extracted/complete_counts/dedup_complete_counts_gene_name.txt", sep=" ", header=TRUE, row.names=NULL)
+
+# report duplicate row names which is "0 rows"
+n_occur <- data.frame(table(rownames(complete_counts)))
+n_occur[n_occur$Freq > 1,]
+
+# add suffix to "duplicate" row names
+rownames(complete_counts) = make.names(complete_counts[,1], unique=TRUE)
+complete_counts$Name = NULL
+```
+
+Below are some summary statistics of the raw, non normalized count data. 
+```{r}
+complete_counts %>% summarize(cell_count = ncol(complete_counts), mean = mean(colSums(complete_counts)), median = median(colSums(complete_counts)), min = min(colSums(complete_counts)), max = max(colSums(complete_counts)))
+```
+
+# Quality Control
+
+Initially filter the counts table by excluding any cells which express less than 200 genes. Excluded any genes which are expressed in fewer than 3 cells. Search for mitochondrial genes and add meta data about the expression of these genes by the cells. Search for olfactory genes and add meta data about the expression of these genes by the cells. Add life stage metadata. 
+```{r}
+xie <- CreateSeuratObject(raw.data = complete_counts, min.cells = 3, min.genes = 200, project = "Xie Olfactory Epithelial Cells")
+
+# mito metadata
+mito.genes <- grep(pattern = "^mt.", x = rownames(x = xie@data), value = TRUE)
+percent.mito <- Matrix::colSums(xie@raw.data[mito.genes, ])/Matrix::colSums(xie@raw.data)
+xie <- AddMetaData(object = xie, metadata = percent.mito, col.name = "percent.mito")
+
+# lifestage metadata
+lifestage <- read.delim("/l/Yu/YuLab/Bioinformatics/projects/single_cell/xie/resources/lifestage_metadata.txt")
+lifestage <- unlist(lifestage)
+xie <- AddMetaData(object = xie, metadata = lifestage, col.name = "lifestage")
+
+# before filtering
+pre_filter <- VlnPlot(object = xie, features.plot = c("nGene", "percent.mito"), nCol = 2, do.return = TRUE)
+grid.arrange(pre_filter, top=textGrob("Before % Mito Filtering", gp=gpar(fontsize=18,font=2)))
+
+```
+
+
+
+```{r}
+xie <- FilterCells(object = xie, subset.names = "percent.mito", low.thresholds = -Inf, high.thresholds = 0.05)
+post_filter <- VlnPlot(object = xie, features.plot = c("nGene", "percent.mito"), nCol = 2)
+grid.arrange(post_filter, top=textGrob("After % Mito Filtering", gp=gpar(fontsize=18,font=2)))
+```
+
+# Normalization
+
+Here we perform global-scaling normalization. Cell gene expression is normalized by total expression, multiplied by a scale factor of 10,000, and log transformed.
+```{r}
+xie <- NormalizeData(object = xie, normalization.method = "LogNormalize", scale.factor = 10000, display.progress = FALSE)
+```
+
+# Variable genes
+
+`FindVariableGenes` calculates the average expression and dispersion for each gene, places these genes into bins, and then calculates a z-score for dispersion within each bin. 
+```{r}
+xie <- FindVariableGenes(object = xie, mean.function = ExpMean, dispersion.function = LogVMR, x.low.cutoff = 0.0125, x.high.cutoff = 3, y.cutoff = 0.5, display.progress = FALSE)
+```
+
+We end up with 5949 variable genes using the default setting for this function. We can try clustering with variable genes or with all of the genes. Look to the *Dimensional Reduction* section of this document for the branch. 
+```{r}
+length(x = xie@var.genes)
+```
+
+# Scaling
+
+We regress out variation between cells driven by percent mitochondria. This would be uninteresting and not biologically relevant variation.
+```{r}
+xie <- ScaleData(object = xie, vars.to.regress = c("percent.mito"), display.progress = FALSE, do.par=TRUE, num.cores=12)
+```
+
+# Dimensional Reduction
+
+Perform principal components analysis on the variable genes or all genes. Using only the variable genes will decrease the amount of time it takes to run, but running PCA on all of the genes should have similar results. We use all genes.
+```{r}
+xie <- RunPCA(object = xie, pc.genes = rownames(xie@data), do.print = FALSE)
+# xie <- RunPCA(object = xie, pc.genes = xie@var.genes, do.print = FALSE)
+
+PCAPlot(object = xie, dim.1 = 1, dim.2 = 2, group.by="orig.ident")
+```
+
+# Visualize significant components
+
+Visualize the PCs by comparing the distribution of p-values for each PC with a uniform distribution. Significant PCs should show a large amount of genes with low p-values above the uniform distribution.
+```{r}
+# xie <- JackStraw(object = xie, num.replicate = 100, display.progress = FALSE)
+# JackStrawPlot(object = xie, PCs = 1:12)
+```
+
+Visualize the PCs with a scree plot by examining the standard deviations of the components. The components have decreasingly significant amounts of data and will contribute noise to the analysis. Choose the cutoff at the clear elbow in the plot. Use the Jack Straw plot to inform the decision.
+```{r}
+PCElbowPlot(object=xie)
+```
+
+We'll use PCs 1:10 based on both techniques above.
+
+# Clustering
+
+Use a graph-based clustering approach on the dimensionally reduced data (through PCA). Tweak the resolution until the graph-based clusters make sense when viewed on the tSNE plot. Stash this identification.
+```{r}
+xie <- FindClusters(object = xie, reduction.type = "pca", dims.use = 1:10, resolution = .8, print.output = 0, save.SNN = TRUE, force.recalc=TRUE)
+xie <- StashIdent(xie, save.name = "cluster_id")
+```
+
+
+
+# tSNE {.tabset}
+
+## Clusters labelled
+
+Once again, we are NOT clustering directly on tSNE components. The clustering occurs on principal components 1:10. We visualize the data with a tSNE, then overlay the clustering information on this plot. The two should be in agreement. In tSNE, the perplexity parameter is an estimate of the number of effective neighbors. The default of 30 is too high for our number of cells. We choose 20 here. 
+```{r}
+xie <- RunTSNE(object = xie, dims.use = 1:10, do.fast = FALSE, perplexity=20)
+
+TSNEPlot(object = xie)
+```
+
+## Life stage labelled
+
+This tSNE plot is identical to the one above, but the cells are labelled by experimental metadata regarding the life stage of the organism from which the cells were sampled rather than the clusters determined by earlier methods in this analysis. Almost all of the adult cells fall within cluster 1 and 2.
+```{r}
+TSNEPlot(object = xie, group.by = "lifestage")
+```
+
+# Canonical gene distributions {.tabset}
+
+Cells are labelled with expression level of the indicated canonical marker gene.
+
+## Mature markers
+
+These four mature olfactory markers are expressed at high levels in clusters 1 and 2 and only very lightly in cluster 0. Almost all of the adult cells fall within cluster 1 and 2.
+```{r}
+FeaturePlot(object = xie, features.plot = c("Omp", "Stoml3", "Gng13", "Gnal"), reduction.use = "tsne", no.legend = FALSE)
+```
+
+## Immature markers
+
+These four immature olfactory markers are expressed at high levels in cluster 0 and only very lightly in clusters 1 and 2. 
+```{r}
+FeaturePlot(object = xie, features.plot = c("Hdac2", "Gng8", "Stmn1", "Gap43"), reduction.use = "tsne", no.legend = FALSE)
+```
+
+# Distribution of markers {.tabset}
+
+## Mature markers
+
+```{r}
+mature_vln <- VlnPlot(object = xie, features.plot = c("Omp", "Stoml3", "Gng13", "Gnal"), use.raw = FALSE, y.log = FALSE, do.return = TRUE)
+grid.arrange(mature_vln, top=textGrob("Mature Canonical Gene Distribution", gp=gpar(fontsize=18,font=2)))
+```
+
+## Immature markers
+
+```{r}
+immature_vln <- VlnPlot(object = xie, features.plot = c("Hdac2", "Gng8", "Stmn1", "Gap43"), use.raw = FALSE, y.log = FALSE, do.return = TRUE)
+grid.arrange(immature_vln, top=textGrob("Immature Canonical Gene Distribution", gp=gpar(fontsize=18,font=2)))
+```
+
+# Differentially expressed genes
+
+Look for genes differential expressed in one cluster compared to all others with a more quantitative approach.
+
+## By Cluster {.tabset}
+
+### Cluster 0
+
+Cluster 0 contains mostly neurons from newborn mice. This cluster is comprised of mostly immature OSNs. In the following table, we can see that a the most significantly differentially expressed genes in this cluster vs cluster 1 and 2 are genes which include canonical mature OSN markers, such as `Gnal`, `Omp`, and `Stoml3`.
+
+```{r}
+cluster0.markers <- FindMarkers(object = xie, ident.1 = 0, min.pct = 0.25, print.bar = FALSE)
+cluster0.markers
+```
+
+### Cluster 1
+
+Cluster 1 contains both adult and newborn neurons. These neurons are most likely in an intermediate stage, transitioning from immature OSNs to mature OSNs. There is expression of immature and mature OSNs. From the metadata, we see that this cluster is a mixture of cells from adult and newborn mice. Gng13, Cnga2, and Gnal are all mature markers. 
+
+```{r}
+cluster1.markers <- FindMarkers(object = xie, ident.1 = 1, min.pct = 0.25, print.bar = FALSE)
+cluster1.markers
+```
+
+### Cluster 2 
+
+Cluster 2 contains only neurons from adult mice. This cluster is comprised of mostly mature OSNs. 
+
+```{r}
+cluster2.markers <- FindMarkers(object = xie, ident.1 = 2, min.pct = 0.25, print.bar = FALSE)
+cluster2.markers
+```
+
+
+## Pairwise comparison {.tabset}
+
+### Cluster 0 vs 2
+
+```{r}
+cluster0_2.markers <- FindMarkers(object = xie, ident.1 = 0, ident.2 = 2, min.pct = 0.25, print.bar = FALSE)
+cluster0_2.markers
+```
+
+### Cluster 0 vs 1
+
+```{r}
+cluster0_1.markers <- FindMarkers(object = xie, ident.1 = 0, ident.2 = 1, min.pct = 0.25, print.bar = FALSE)
+cluster0_1.markers
+```
+
+### Cluster 1 vs 2
+
+```{r}
+cluster1_2.markers <- FindMarkers(object = xie, ident.1 = 1, ident.2 = 2, min.pct = 0.25, print.bar = FALSE)
+cluster1_2.markers
+```
+
+## Top logFC by cluster
+
+Which genes define each cluster in the context of only positive logFC? 
+
+```{r}
+xie.markers <- FindAllMarkers(object = xie, only.pos = TRUE, min.pct = 0.25, thresh.use = 0.25, print.bar = FALSE)
+xie.markers %>% group_by(cluster) %>% top_n(10, avg_logFC)
+```
+
+
+
+# Heatmap
+
+## Top 10 logFC
+
+We can see two distinct expression patterns between the three clusters. Clusters 1 and 2 have very similar expression patterns.
+```{r}
+top10 <- xie.markers %>% group_by(cluster) %>% top_n(10, avg_logFC)
+DoHeatmap(object = xie, genes.use = top10$gene, slim.col.label = TRUE, remove.key = TRUE)
+```
+
+
+# By number receptor analysis 
+
+## Multireceptor diff expression
+
+Some neurons express multiple receptors. I have placed cells in one of three categories regarding olfactory receptor expression: none, single, and multi. The OR count is incremented only if the number of transcripts in the raw counts matrix is greater than 300. 
+
+Set the identity of the cells to the number of olfactory receptors they express.
+
+```{r}
+FetchData(xie, c("ident","PC1","nGene","lifestage"))
+
+# olfactory receptor/vomeronasal receptor counts (prose)
+OR_genes <- grep(pattern = "^Olfr|^Vmn|^Taar", x = rownames(x = xie@data), value = TRUE)
+num.ors <- colSums(complete_counts[OR_genes, ] > 300)
+num.ors[num.ors == 0] = "none"
+num.ors[num.ors %in% "1"] = "single"
+num.ors[!(num.ors %in% c("none", "single"))] = "multi"
+xie <- AddMetaData(object = xie, metadata = num.ors, col.name = "num.ors")
+
+xie <- SetAllIdent(xie, "num.ors")
+FetchData(xie, c("ident","PC1","nGene","lifestage"))
+```
+
+## tSNE
+
+```{r}
+TSNEPlot(object = xie, group.by = "num.ors")
+```
+
+## Single vs multi
+
+Here we look at genes differentially expressed between OSNs expressed single ORs versus those expressing multiple.
+
+```{r}
+or_single_multi.markers <- FindMarkers(object = xie, only.pos = FALSE, ident.1 = "single", ident.2 = "multi", min.pct = 0.25, print.bar = FALSE)
+or_single_multi.markers
+```
+
+## None vs single
+
+```{r}
+or_single_none.markers <- FindMarkers(object = xie, only.pos = FALSE, ident.1 = "none", ident.2 = "single", min.pct = 0.25, print.bar = FALSE)
+or_single_none.markers
+```
+
+## Top logFC by number of olfactory receptors per neuron
+
+Which genes define each cluster in the context of only positive logFC? 
+
+```{r}
+xie.markers.ors <- FindAllMarkers(object = xie, only.pos = TRUE, min.pct = 0.25, thresh.use = 0.25, print.bar = FALSE)
+top10.ors <- xie.markers.ors %>% group_by(cluster) %>% top_n(10, avg_logFC)
+```
+
+```{r}
+DoHeatmap(object = xie, use.scaled = TRUE, genes.use = top10.ors$gene, slim.col.label = TRUE, remove.key = TRUE, group.by = "ident")
+```
+
+# Sexually dimorphic expression
+
+Using Xist as a marker for sex, we can look at differentially expressed genes between male and female neurons.
+
+```{r}
+FetchData(xie, c("ident","PC1","nGene","lifestage"))
+
+# xist expressors
+# expect true for cells with scaled expression value of greater than 0
+# xist <- complete_counts["Xist",] > 200
+xist <- (complete_counts["Xist",] > 100)[1,]
+xist[xist == TRUE] <- "female"
+xist[xist == FALSE] <- "male"
+xie <- AddMetaData(object = xie, metadata = xist, col.name = "xist")
+
+xie <- SetAllIdent(xie, "xist")
+FetchData(xie, c("ident","nGene","lifestage", "xist"))
+```
+
+## Female vs male
+
+```{r}
+TSNEPlot(object = xie, group.by = "xist")
+```
+
+## Differential expression
+
+Eif2s3y has been found to be sexually dimorphic.
+
+```{r}
+female_markers <- FindMarkers(object = xie, only.pos = FALSE, ident.1 = "female", ident.2 = "male", min.pct = 0.25, print.bar = FALSE)
+female_markers
+```
+
+
+```{r}
+xie <- SetAllIdent(xie, "cluster_id")
+```
+

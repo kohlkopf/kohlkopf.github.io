@@ -1,12 +1,12 @@
 language: r
 cache: packages
-pandoc_version: 2.
+pandoc_version: 2.1
 
 branches:
   only: source
 
 script:
-  - Rscript -e 'servr:::knit_maybe(c(".", "_analysis", "_posts"), c(".", "_posts", "_posts"), "build.R", "jekyll")'
+  - Rscript -e 'servr:::knit_maybe("_workbooks", "_analysis", "build.R", "jekyll")'
   
 deploy:
   provider: pages
