@@ -1,0 +1,14 @@
+---
+title: "Test Rmd post"
+author: "Kohl Kinning"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+---
+
+This is a a test post. It's written in Rmarkdown which is knitted to normal markdown by the Travis build tool. The source is stored in _rmd_source and the knit markdown document should end up in _workbooks.
+
+```{r}
+library(ggplot2)
+ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
+    geom_point()
+```
+
