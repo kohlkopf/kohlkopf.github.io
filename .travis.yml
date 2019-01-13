@@ -6,7 +6,7 @@ branches:
   only: source
 
 script:
-  - Rscript -e 'servr:::knit_maybe("_workbooks", "_analysis", "build.R", "jekyll")'
+  - Rscript -e 'servr:::knit_maybe(input="_rmd_source", output="_workbooks", "build.R", "jekyll")'
   
 deploy:
   provider: pages
