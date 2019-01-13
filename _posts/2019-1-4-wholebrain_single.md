@@ -1,9 +1,8 @@
 ---
 layout: post 
 title: Wholebrain vignette
+author: Kohl Kinning
 ---
-
-# Daniel Fürth's Wholebrain
 
 The purpose of WholeBrain is to provide a user-friendly and efficient way for scientist with minimal knowledge of computers to create anatomical maps and integrate this information with behavioral and physiological data for sharing on the web. Software website [here](http://www.wholebrainsoftware.org/).
 

@@ -1,9 +1,8 @@
 ---
 layout: post 
 title: Web development in RStudio
+author: Kohl Kinning
 ---
-
-# RStudio and Jekyll
 
 RStudio is feature-packed. The Viewer Pane will be the focus of the post today. Not only can you display plots and preview your rendered markdown documents, you can also serve locally hosted content! Some have used this to view shiny apps. Here we'll build our site locally and check it out in the viewer pane. Paired with github.io free hosting and support for Jekyll sites, you can update your site in almost real time from RStudio.
 
@@ -25,7 +24,7 @@ RStudio is built for coding. It has syntax highlighting and useful development s
 
 ---
 
-# 1. Jekyll serve
+# Jekyll serve
 
 ![terminal](/img/2018-12-20-jekyll_dev/terminal.png)
 
@@ -51,7 +50,7 @@ Configuration file: /Users/kohlkopf/Documents/kohlkopf.github.io/_config.yml
 
 The site is now being served at http://127.0.0.1:4000.
 
-# 2. Viewer pane in RStudio
+# Viewer pane in RStudio
 
 ![console](/img/2018-12-20-jekyll_dev/console.png)
 

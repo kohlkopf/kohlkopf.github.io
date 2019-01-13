@@ -36,8 +36,14 @@
 						<li><a href="/blog/"> Blog(r) </a></li>
 						<li><a href="/contact/"> Contact </a></li>
 					</ul>
-                
 				</nav>
+				
+				<toc class="center_div">
+	            {% if page.dir == /blog/  %}
+	                {% include toc.html html=content h_min=1 h_max=1 id="toc" sanitize=true %}
+	            {% endif %}
+	            </toc>
+	            
 			</header>
 
 			<div id="wrapper">	

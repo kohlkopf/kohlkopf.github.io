@@ -22,7 +22,7 @@
     {% capture my_toc %}{% endcapture %}
     {% assign minHeader = include.h_min | default: 1 %}
     {% assign maxHeader = include.h_max | default: 6 %}
-    {% assign nodes = include.html | split: '<h' %}
+    {% assign nodes = include.html | split: '<h'  %}
     {% assign firstHeader = true %}
     {% for node in nodes %}
         {% if node == "" %}

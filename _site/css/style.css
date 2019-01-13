@@ -32,7 +32,7 @@ img {
 
 /* Typography */
 
-h1, h2, h3, h4, h5, h6 {
+ht, h1, h2, h3, h4, h5, h6 {
   color:#222;
   margin:0 0 20px;
 }
@@ -41,8 +41,12 @@ p, ul, ol, table, pre, dl {
   margin:0 0 20px;
 }
 
-h1, h2, h3 {
+ht, h1, h2, h3 {
   line-height:1.1;
+}
+
+ht {
+    font-size:40px;
 }
 
 h1 {
@@ -234,7 +238,7 @@ nav li:last-child {
 }
 
 nav li a {
-  font-size:11px;
+  font-size:12px;
   color:#999;
   display:block;
   text-align:center;
@@ -261,6 +265,52 @@ nav li a:active {
 nav li a:active,
 nav li a.active,
 nav li a.active:hover {
+  background: #f8f8f8;
+}
+
+
+/* TOC */
+
+toc ul {
+  list-style:none;
+  padding:0;
+  background: #fff;
+  border-radius:5px;
+  border:1px solid #e5e5e5;
+}
+
+toc li {
+  border-bottom:1px solid #e5e5e5;
+}
+
+toc li a {
+  color:#999;
+  display:block;
+  text-align:right;
+  padding-right: 10px;
+  line-height:30px;
+  height:30px;
+  font-size:14px;
+}
+
+toc li:first-child a {
+  border-radius:5px 0 0 5px;
+}
+
+toc li:last-child a {
+  border-radius:0 5px 5px 0;
+}
+
+toc li a:hover,
+toc li a:active {
+  color:#3498DB;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+toc li a:active,
+toc li a.active,
+toc li a.active:hover {
   background: #f8f8f8;
 }
 
@@ -456,6 +506,10 @@ img.pull-left {
     border: none;
   }
   
+    toc ul {
+      display: none;
+  }
+  
   section {
     border:1px solid #eee;
     border-width:1px 0;
@@ -505,6 +559,10 @@ img.pull-left {
    margin: 0 auto;
   }
   
+  toc ul {
+      display: none;
+  }
+  
   header p.view {
     position:static;
   }
@@ -522,10 +580,17 @@ img.pull-left {
   body {
     padding:15px;
   }
+  
   .post-meta {
     font-size: 15px;
   }
+  
+    toc ul {
+      display: none;
+  }
 }
+
+
 
 @media print {
   body {
@@ -714,6 +779,9 @@ form {
     float: none;
     width: 100%;
   }
+    toc ul {
+      display: none;
+  }
 }
 
 <style>
@@ -792,6 +860,13 @@ form {
     position:relative;
     top:1px;
 }
+
+.center-div
+{
+  position: relative;
+  height: 100%;
+}
+
 </style>
 
 
