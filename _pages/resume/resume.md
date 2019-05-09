@@ -15,38 +15,38 @@ permalink: /resume/
 ---
 
 2017-2018
-:   **Master of Science, Biology** / *University of Oregon*
+:   **M.S., Bioinformatics & Genomics Master’s Program** / *University of Oregon*
 
     **Bioinformatics and Applied Genomics Master's Program**
 
-    *Research project: Single Cell Analysis of the Olfactory Epithelium*
+    *Select courses: Adv. Biological Statistics I/II, Computational Methods in Genomics Analysis, Bacterial–Host Interatctions*
 
 2012-2016
-:   **Bachelor of Arts, Biology** / *Lewis & Clark College* 
+:   **B.A., Biology, Computer Science minor** / *Lewis & Clark College* 
 
     *Minor: Computer Science*
     
-    *Upper level courses: Molecular Biology, Phylogenetics, Architecture & Assembly Language, Big Data*
+    *Select courses: Molecular Biology, Phylogenetics, Architecture & Assembly Language, Big Data*
 
 ## Research
 ---
 
-**Single Cell Analysis of the Olfactory Epithelium** / *Stowers Institute, Dr. Yu Lab* / Eugene, OR
+**Genetic Mapping of Functional Vomeronasal Circuits** / *Stowers Institute for Medical Research, Yu Lab*
+
+Bioinformaticist
+
++ Hypothesis-driven investigation of scRNA-seq dataset, 100,000 cells
++ Seeking to identify individual receptors expressed by ligand-activated cells
++ Working closely with biologist through experimental design and analysis
 
 
-Graduate Group Research Assistant
+**Quantitative Trait Loci Responsible for Variation in Nestlet Construction** / *Stowers Institute for Medical Research, Yu Lab*
 
-+ Implemented quality control of read data
-+ Performed differential expression analysis
-+ Elucidated specific marker genes of single cell data
+Bioinformaticist
 
-
-**Horizontal Gene Transfer and the Gain of PKSI in Lichens** / *Lewis & Clark College* / Portland, OR 
-
-Undergraduate Class Research Project
-
-+ Performed preliminary phylogenetic analysis utilizing Bayesian and maximum likelihood methods of inference for phylogeny
-+ Drafted a mock grant proposal for the project
++ Investigated quantitative trait variation in nestlet construction in derived F2 population
++ Sought to connect the phenotype to the genotype utilizing SNVs as molecular markers
++ Learned and utilized state-of-the art open source software (GATK4, Spark, rQTL)
 
 ## Skills
 ---
@@ -73,9 +73,10 @@ Undergraduate Class Research Project
 ---
 **Bioinformaticist** / *Stowers Institute for Medical Research* / Kansas City, MO
 
-+ Gained experienced as a bioinformatics data analyst in neuroscience
-+ Conducted research on the olfactory system in a model organism
-+ Performed collaborative research in a massively interdisciplinary lab 
++ Participated actively in weekly lab-meetings
++ Became familiar with neurobiologist–analyst interface
++ Worked on diverse neurobiological projects; QTL, ligand-receptor identification, 
++ technical analysis of sorting techniques, and high-volume computer-vision tasks
 
 **Bicycle Mechanic** / *Sellwood Cycle Repair* / Portland, OR
 
