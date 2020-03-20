@@ -9,7 +9,7 @@ permalink: /resume/
 # Hello
 ### My name is Kohl Kinning. I am...
 
-...an agile and flexible biologist with multidisciplinary interest and experience in Biology, Computer Science, and their practical combination. Efficient and comfortable in fast paced environments. Proactive self-starter with excellent relationship building skills. Passionate to learn new skills in diverse areas. Driven to discover novel and creative applications of existing tools.
+...an agile and flexible biologist with multidisciplinary interest and experience in Biology, Computer Science, and their practical combination. Efficient and comfortable in fast paced environments. Proactive self-starter with excellent relationship building skills. Passionate to learn new skills in diverse areas. Driven to discover novel and creative applications of existing tools. Experienced with clinical data and model systems.
 
 ## Education
 ---
@@ -31,18 +31,27 @@ permalink: /resume/
 ## Research
 ---
 
+**Human Trisome Project** / *University of Colorado Anschutz Medical Campus, Linda Crnic Institute for Down Syndrome*
+
+Bioinformatics analyst
+
++ Worked with clinical data and mouse models of T21
++ Processed transcriptome data for several sub-projects, one containing 400 samples
++ 16s metagenomics to characterize oral- and gut-residing bacteria
+
+
 **Genetic Mapping of Functional Vomeronasal Circuits** / *Stowers Institute for Medical Research, Yu Lab*
 
-Bioinformaticist
+Bioinformatics analyst
 
 + Hypothesis-driven investigation of scRNA-seq dataset, 100,000 cells
-+ Seeking to identify individual receptors expressed by ligand-activated cells
-+ Working closely with biologist through experimental design and analysis
++ Sought to identify individual receptors expressed by ligand-activated cells
++ Worked closely with biologist through experimental design and analysis
 
 
 **Quantitative Trait Loci Responsible for Variation in Nestlet Construction** / *Stowers Institute for Medical Research, Yu Lab*
 
-Bioinformaticist
+Bioinformatics analyst
 
 + Investigated quantitative trait variation in nestlet construction in derived F2 population
 + Sought to connect the phenotype to the genotype utilizing SNVs as molecular markers
@@ -53,16 +62,16 @@ Bioinformaticist
 
 | Languages | Tools         | Analyses                         |
 |:---------:|:-------------:|:--------------------------------:|
-| R         | bash          | single cell transcriptomics      |
+| R         | bash          | 16S amplicon metagenomics        |
 | Python    | git           | variant detection                |
-| bash      | GATK          | quantitative trait loci analysis |
+| bash      | GATK          | single cell transcriptomics      |
 | MySQL     | Apache SPARK  | sequencing quality control       |
 | PHP       | SLURM         | principal components analysis    |
 | HTML      | Jupyter       | t-SNE analysis                   |
 | LaTeX     | RMarkdown     | differential expression          |
 | Arduino   | MEGA          | Bayesian inference phylogeny     |
 
-   
+
 **Bioinformatics and Genomics Workshop for Undergraduates** / *Reed College*
 
 **LaTeX for Scientific Writing Workshop** / *Lewis & Clark College*
@@ -71,12 +80,19 @@ Bioinformaticist
 
 ## Employment
 ---
-**Bioinformaticist** / *Stowers Institute for Medical Research* / Kansas City, MO
+**Bioinformatics analyst** / *Linda Crnic Institute for Medical Research* / Aurora, CO
+
++ Operated as an analyst on the groundbreaking Human Trisome Project
++ Collaborated with a team of immunologists, clinical practitioners, and clinical informatics specialists
++ Investigated clinical, metagenomic, and transcriptomic data 
+
+
+**Bioinformatics analyst** / *Stowers Institute for Medical Research* / Kansas City, MO
 
 + Participated actively in weekly lab-meetings
 + Became familiar with neurobiologist–analyst interface
-+ Worked on diverse neurobiological projects; QTL, ligand-receptor identification, 
-+ technical analysis of sorting techniques, and high-volume computer-vision tasks
++ Worked on diverse neurobiological projects; QTL, ligand-receptor identification 
++ Technical analysis of sorting techniques, and high-volume computer-vision tasks
 
 **Bicycle Mechanic** / *Sellwood Cycle Repair* / Portland, OR
 
