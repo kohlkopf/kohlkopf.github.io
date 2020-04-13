@@ -8,7 +8,9 @@ sitemap: false
 # Hello
 ### My name is Kohl Kinning. I am...
 
-...a bioinformaticist in the [Yu Lab](https://ron-yu-lab.github.io) research group at the Stowers Institute for medical research. Our aim is to explore and understand sensory systems and the processing of sensory information in the brain and it's my task to sift through big data associated with transcriptomics, genomics, and neural activation. I've recently been involved with a project involving a computer vision framework useful for examining neural activation in the entire organ. 
+...a bioinformatics analyst with the [Crnic Institute for Down Syndrome](http://www.trisome.org/) at the University of Colorado Anschutz Medical Campus. Our aim is to leverage multi-omics data from the largest cohort of individuals with Down Syndrome yet to gain insight in to the underlying causes of health problems experienced by these people. Further, to put action to what we learn to help lessen the negative impacts of these health problems of people with and without Down Syndrome alike. It's my charge to sift through genetic, metabolic, microbial, immune, and many other data modalities and see how they affect a person's health in the context of trisomy 21.
+
+
 
 Check out [Analysis](/analysis/) for some just-for-fun analysis, [Blog(r)](/blog/) for some useful R or RStudio tips.
 
